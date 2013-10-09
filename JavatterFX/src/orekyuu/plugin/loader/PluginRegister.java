@@ -13,20 +13,20 @@ public enum PluginRegister {
 	private Map<String,Object> plugins=new HashMap<String,Object>();
 
 	/**
-	 * �v���O�C����o�^����
+	 * プラグインを登録
 	 * @param name
 	 * @param obj
 	 */
-	protected void registerPlugin(String name,Object obj){
+	void registerPlugin(String name,Object obj){
 		System.out.println("plugin adding: "+name);
 		plugins.put(name, obj);
 	}
 
 	/**
-	 * �v���O�C���̔z���Ԃ�
+	 * プラグインのリストを返す
 	 * @return
 	 */
-	protected Object[] getPluginList(){
+	Object[] getPluginList(){
 		List<Object> list=new ArrayList<Object>();
 		for(Entry<String, Object> entry:plugins.entrySet()){
 			list.add(entry.getValue());

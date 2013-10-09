@@ -14,7 +14,7 @@ public class PluginLoader{
 	}
 
 	/**
-	 * ���ׂẴv���O�C����PostInit���Ăяo��
+	 * PostInitを呼び出す
 	 */
 	private void pluginPostInit(){
 		for(Object obj:PluginRegister.INSTANCE.getPluginList()){
@@ -35,26 +35,26 @@ public class PluginLoader{
 	}
 
 	/**
-	 * �v���O�C���ɒǉ�
+	 * プラグインを追加する
 	 * @param clazz
 	 */
 	private void addPlugin(Class clazz){
-		Annotation plugin=getPluginAnnotation(clazz);//�N���X��Plugin�A�m�e�[�V�������擾
-		if(plugin==null)return ;//�A�m�e�[�V�������Ȃ���Βǉ����Ȃ�
+		Annotation plugin=getPluginAnnotation(clazz);//クラスに付けられているPluginアノテーションを取得する
+		if(plugin==null)return ;//なければリターン
 		Plugin p=(Plugin) plugin;
 
 		try {
-			Object obj=clazz.newInstance();//�C���X�^���X�𐶐�
+			Object obj=clazz.newInstance();//インスタンスを作成
 
-			//PreInit�A�m�e�[�V�������t������Ă��郁�\�b�h�����s����
+			//PreInitを実行
 			for(Method m:clazz.getMethods()){
 				if(equippedAnnotations(m.getAnnotations(),
 						orekyuu.plugin.loader.Plugin.PreInit.class)!=null){
 						m.invoke(obj, (Object[])null);
 				}
 			}
-			PluginRegister.INSTANCE.registerPlugin(p.name(), obj);//�v���O�C����o�^����
-			//Init�A�m�e�[�V�������t������Ă��郁�\�b�h�����s����
+			PluginRegister.INSTANCE.registerPlugin(p.name(), obj);//Pluginを登録する
+			//Initを実行
 			for(Method m:clazz.getMethods()){
 				if(equippedAnnotations(m.getAnnotations(),
 						orekyuu.plugin.loader.Plugin.Init.class)!=null){
@@ -73,8 +73,8 @@ public class PluginLoader{
 	}
 
 	/**
-	 * �w�肳�ꂽ�N���X��Plugin�A�m�e�[�V������Ԃ��B�Ȃ����null
-	 * @param target ���ׂ�N���X
+	 * Pluginアノテーションを返す
+	 * @param target 調べたい対象のクラス
 	 * @return
 	 */
 	private Annotation getPluginAnnotation(Class target){
@@ -86,10 +86,10 @@ public class PluginLoader{
 	}
 
 	/**
-	 * �z��̒��Ɏw�肳�ꂽ�A�m�e�[�V���������邩���ׂ�
-	 * @param annotations ���ׂ�z��
-	 * @param target �A�m�e�[�V�����̃N���X
-	 * @return ���������A�m�e�[�V����
+	 * リストの中に指定されたアノテーションが存在すれば返す
+	 * @param annotations アノテーションのリスト
+	 * @param target 調べたいアノテーションクラス
+	 * @return 見つかったアノテーションのリスト
 	 */
 	private Annotation[] equippedAnnotations(Annotation[] annotations,Class target){
 		List<Annotation> list=new ArrayList<Annotation>();
