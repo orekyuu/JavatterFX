@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<BorderPane id="BorderPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.WindowController">
+  <center>
+    <HBox fx:id="box" maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0">
+      <effect>
+        <InnerShadow height="1.0" radius="0.0" width="1.0" />
+      </effect>
+    </HBox>
+  </center>
+  <top>
+    <BorderPane fx:id="topborder" maxWidth="-Infinity" prefHeight="98.0" prefWidth="-1.0">
+      <bottom>
+        <ToolBar fx:id="bar" blendMode="SRC_OVER" cache="false" pickOnBounds="true">
+          <items>
+            <Button fx:id="config" blendMode="SRC_OVER" mnemonicParsing="false" pickOnBounds="true" text="Config" />
+            <MenuButton fx:id="plugin" ellipsisString="" graphicTextGap="4.0" mnemonicParsing="false" text="Plugin" underline="false" />
+            <Button fx:id="javabeam" mnemonicParsing="false" text="JavaBeam" />
+          </items>
+        </ToolBar>
+      </bottom>
+      <left>
+        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onKeyTyped="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
+          <effect>
+            <InnerShadow color="#bfbfbf" />
+          </effect>
+        </TextArea>
+      </left>
+    </BorderPane>
+  </top>
+</BorderPane>

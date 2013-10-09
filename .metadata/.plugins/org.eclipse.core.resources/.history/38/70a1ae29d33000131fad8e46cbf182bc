@@ -1,0 +1,106 @@
+package com.github.orekyuu.plugin.loader;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.github.orekyuu.plugin.TestPlugin;
+
+public class PluginLoader{
+
+	public void load(){
+		addPlugin(TestPlugin.class);
+		pluginPostInit();
+	}
+
+	/**
+	 * すべてのプラグインのPostInitを呼び出す
+	 */
+	private void pluginPostInit(){
+		for(Object obj:PluginRegister.INSTANCE.getPluginList()){
+			for(Method m:obj.getClass().getMethods()){
+				if(equippedAnnotations(m.getAnnotations(), Plugin.PostInit.class)==null)
+					continue;
+				try {
+					m.invoke(obj, null);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	/**
+	 * プラグインに追加
+	 * @param clazz
+	 */
+	private void addPlugin(Class clazz){
+		Annotation plugin=getPluginAnnotation(clazz);//クラスのPluginアノテーションを取得
+		if(plugin==null)return ;//アノテーションがなければ追加しない
+		Plugin p=(Plugin) plugin;
+
+		try {
+			Object obj=clazz.newInstance();//インスタンスを生成
+
+			//PreInitアノテーションが付加されているメソッドを実行する
+			for(Method m:clazz.getMethods()){
+				if(equippedAnnotations(m.getAnnotations(),
+						com.github.orekyuu.plugin.loader.Plugin.PreInit.class)!=null){
+						m.invoke(obj, (Object[])null);
+				}
+			}
+			PluginRegister.INSTANCE.registerPlugin(p.name(), obj);//プラグインを登録する
+			//Initアノテーションが付加されているメソッドを実行する
+			for(Method m:clazz.getMethods()){
+				if(equippedAnnotations(m.getAnnotations(),
+						com.github.orekyuu.plugin.loader.Plugin.Init.class)!=null){
+						m.invoke(obj, (Object[])null);
+				}
+			}
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 指定されたクラスのPluginアノテーションを返す。なければnull
+	 * @param target 調べるクラス
+	 * @return
+	 */
+	private Annotation getPluginAnnotation(Class target){
+		Annotation[] list=equippedAnnotations(target.getAnnotations(), Plugin.class);
+		if(list!=null){
+			return list[0];
+		}
+		return null;
+	}
+
+	/**
+	 * 配列の中に指定されたアノテーションがあるか調べる
+	 * @param annotations 調べる配列
+	 * @param target アノテーションのクラス
+	 * @return 見つかったアノテーション
+	 */
+	private Annotation[] equippedAnnotations(Annotation[] annotations,Class target){
+		List<Annotation> list=new ArrayList<Annotation>();
+		for(Annotation a:annotations){
+			if(a.annotationType().equals(target)){
+				list.add(a);
+			}
+		}
+		if(list.size()==0)return null;
+		return list.toArray(new Annotation[]{});
+	}
+}

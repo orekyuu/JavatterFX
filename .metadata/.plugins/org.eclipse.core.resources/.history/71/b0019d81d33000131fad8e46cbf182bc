@@ -1,0 +1,5 @@
+package orekyuu.plugin.loader.plugin;
+
+public class TestPlugin {
+
+}

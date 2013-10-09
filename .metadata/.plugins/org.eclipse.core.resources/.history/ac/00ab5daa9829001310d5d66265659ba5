@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane fx:id="root" prefHeight="250.0" prefWidth="300.0"
+	xmlns:fx="http://javafx.com/fxml" fx:controller="HelloWorldController">
+	<children>
+		<Button fx:id="btn" text="Say 'Hello World'" onAction="#sayHello"></Button>
+	</children>
+</StackPane>
