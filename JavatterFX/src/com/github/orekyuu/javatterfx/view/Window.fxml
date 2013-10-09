@@ -6,6 +6,7 @@
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane id="BorderPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="425.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.WindowController">
   <center>
@@ -22,7 +23,12 @@
           <items>
             <Button fx:id="config" blendMode="SRC_OVER" mnemonicParsing="false" pickOnBounds="true" text="Config" />
             <MenuButton fx:id="plugin" ellipsisString="" graphicTextGap="4.0" mnemonicParsing="false" text="Plugin" underline="false" />
-            <Button fx:id="javabeam" mnemonicParsing="false" text="JavaBeam" />
+            <Button fx:id="javabeam" mnemonicParsing="false" text="JavaBeam">
+              <font>
+                <Font size="12.0" />
+              </font>
+            </Button>
+            <Button mnemonicParsing="false" text="Tweet" />
           </items>
         </ToolBar>
       </bottom>

@@ -32,7 +32,7 @@ public class TweetObjectController implements Initializable{
     @FXML
     private Label username;
     @FXML
-    private TextArea text;
+    private Label text;
     @FXML
     private Hyperlink via;
 
