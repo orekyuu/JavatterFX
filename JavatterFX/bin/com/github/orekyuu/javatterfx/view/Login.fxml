@@ -9,7 +9,7 @@
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.web.*?>
 
-<BorderPane id="BorderPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.javatterfx.controller.LoginController">
+<BorderPane id="BorderPane" fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.LoginController">
   <center>
     <TextField fx:id="text" prefWidth="200.0" promptText="pin code" BorderPane.alignment="CENTER">
       <effect>
