@@ -18,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
@@ -29,6 +30,8 @@ import com.github.orekyuu.javatterfx.event.stream.EventStatus;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
 import com.github.orekyuu.javatterfx.main.Main;
+import com.github.orekyuu.javatterfx.util.StatusUpdateBuilder;
+import com.github.orekyuu.javatterfx.util.TweetDispenser;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
@@ -38,7 +41,7 @@ public class WindowController implements Initializable, Listener{
 	@FXML
 	private BorderPane root;
     @FXML
-    private BorderPane topborder;
+    private VBox topborder;
     @FXML
     private TextArea tweet;
     @FXML
@@ -147,23 +150,14 @@ public class WindowController implements Initializable, Listener{
 	}
 
 	private void javaBeam() {
-		TwitterUtil util=new TwitterUtil();
-		try {
-			util.tweet(TwitterManager.getInstance().getTwitter(), "JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwww");
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
+		TweetDispenser.tweet("JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwww");
 	}
 
 	private void tweet(EventType type){
-		TwitterUtil util=new TwitterUtil();
-		try {
-			EventUserTweet event=new EventUserTweet(tweet.getText(),TwitterManager.getInstance().getUser(),type);
-			EventManager.INSTANCE.eventFire(event);
-			util.tweet(TwitterManager.getInstance().getTwitter(), event.getText());
-		} catch (TwitterException e) {
-			e.printStackTrace();
-		}
+		EventUserTweet event=new EventUserTweet(tweet.getText(),TwitterManager.getInstance().getUser(),type);
+		EventManager.INSTANCE.eventFire(event);
+		StatusUpdateBuilder builder=new StatusUpdateBuilder(event.getText());
+		TweetDispenser.tweet(builder.create());
 		tweet.setText("");
 	}
 

@@ -16,11 +16,24 @@
       <bottom>
         <VBox fx:id="box1" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
           <children>
-            <Hyperlink fx:id="via" maxWidth="1.7976931348623157E308" text="via hoge" textFill="#808080">
+            <Hyperlink fx:id="via" maxWidth="1.7976931348623157E308" text="via hoge" textFill="GREY">
               <font>
                 <Font name="Meiryo Italic" size="12.0" />
               </font>
             </Hyperlink>
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
+              <children>
+                <Button cancelButton="false" defaultButton="false" mnemonicParsing="false" text="リプライ" />
+                <Button mnemonicParsing="false" text="RT" />
+                <Button mnemonicParsing="false" text="☆" />
+                <MenuButton mnemonicParsing="false" text="...">
+                  <items>
+                    <MenuItem mnemonicParsing="false" text="JavaBeam" />
+                    <MenuItem mnemonicParsing="false" text="非公式RT" />
+                  </items>
+                </MenuButton>
+              </children>
+            </HBox>
           </children>
         </VBox>
       </bottom>

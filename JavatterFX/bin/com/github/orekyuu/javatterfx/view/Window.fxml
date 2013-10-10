@@ -17,8 +17,13 @@
     </HBox>
   </center>
   <top>
-    <BorderPane fx:id="topborder" maxWidth="-Infinity" prefHeight="98.0" prefWidth="-1.0">
-      <bottom>
+    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onKeyPressed="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
+          <effect>
+            <InnerShadow color="#bfbfbf" />
+          </effect>
+        </TextArea>
         <ToolBar fx:id="bar" blendMode="SRC_OVER" cache="false" pickOnBounds="true">
           <items>
             <Button fx:id="config" blendMode="SRC_OVER" mnemonicParsing="false" pickOnBounds="true" text="Config" />
@@ -31,14 +36,7 @@
             <Button fx:id="tweetbutton" mnemonicParsing="false" onAction="#onTweet" text="Tweet" />
           </items>
         </ToolBar>
-      </bottom>
-      <left>
-        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onKeyPressed="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
-          <effect>
-            <InnerShadow color="#bfbfbf" />
-          </effect>
-        </TextArea>
-      </left>
-    </BorderPane>
+      </children>
+    </VBox>
   </top>
 </BorderPane>
