@@ -45,6 +45,8 @@ public class WindowController extends UserStreamAdapter implements Initializable
     @FXML
     private Button javabeam;
     @FXML
+    private Button tweetbutton;
+    @FXML
     private ScrollPane scroll;
     @FXML
     private HBox box;
@@ -113,6 +115,32 @@ public class WindowController extends UserStreamAdapter implements Initializable
 
 	@FXML
     public void onJavaBeam(ActionEvent event) {
+		javaBeam();
+	}
+
+	@FXML
+    public void onTweet(ActionEvent event) {
+		tweet();
+	}
+
+	/**
+	 * ショートカットキーでツイート
+	 * @param event
+	 */
+	public void onChangeText(KeyEvent event){
+		if(event.isShiftDown()||event.isControlDown()){
+			if(KeyCode.ENTER==event.getCode()){
+				tweet();
+				event.consume();
+			}
+			if(KeyCode.J==event.getCode()){
+				javaBeam();
+				event.consume();
+			}
+		}
+	}
+
+	private void javaBeam() {
 		TwitterUtil util=new TwitterUtil();
 		try {
 			util.tweet(TwitterManager.getInstance().getTwitter(), "JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwww");
@@ -121,21 +149,14 @@ public class WindowController extends UserStreamAdapter implements Initializable
 		}
 	}
 
-	/**
-	 * ショートカットキーでツイート
-	 * @param event
-	 */
-	public void onChangeText(KeyEvent event){
-		if(event.isShortcutDown()){
-			TwitterUtil util=new TwitterUtil();
-			try {
-				util.tweet(TwitterManager.getInstance().getTwitter(), tweet.getText());
-			} catch (TwitterException e) {
-				e.printStackTrace();
-			}
-			tweet.setText("");
-			event.consume();
+	private void tweet(){
+		TwitterUtil util=new TwitterUtil();
+		try {
+			util.tweet(TwitterManager.getInstance().getTwitter(), tweet.getText());
+		} catch (TwitterException e) {
+			e.printStackTrace();
 		}
+		tweet.setText("");
 	}
 
 	/**

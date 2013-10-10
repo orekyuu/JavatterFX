@@ -28,12 +28,12 @@
                 <Font size="12.0" />
               </font>
             </Button>
-            <Button mnemonicParsing="false" text="Tweet" />
+            <Button fx:id="tweetbutton" mnemonicParsing="false" onAction="#onTweet" text="Tweet" />
           </items>
         </ToolBar>
       </bottom>
       <left>
-        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onKeyTyped="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
+        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onKeyPressed="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
           <effect>
             <InnerShadow color="#bfbfbf" />
           </effect>
