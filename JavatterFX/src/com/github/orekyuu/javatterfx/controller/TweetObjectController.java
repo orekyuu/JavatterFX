@@ -4,11 +4,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.github.orekyuu.javatterfx.util.IconCache;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -59,10 +60,6 @@ public class TweetObjectController implements Initializable{
 
 	public void setImage(String s) throws Exception{
 		URL url=new URL(s);
-		HttpURLConnection http=(HttpURLConnection) url.openConnection();
-		http.setRequestMethod("GET");
-		http.connect();
-		image.setImage(new Image(http.getInputStream()));
-		http.disconnect();
+		image.setImage(IconCache.getInstance().getIcon(url));
 	}
 }
