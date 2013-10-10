@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -52,6 +53,9 @@ public class WindowController extends UserStreamAdapter implements Initializable
 
     private JavatterLineController replycontroller;
 
+    /**
+     * 初期化処理
+     */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
@@ -81,6 +85,10 @@ public class WindowController extends UserStreamAdapter implements Initializable
 		}
 	}
 
+	/**
+	 * コンポーネントを追加
+	 * @param node
+	 */
 	public void addChilden(Node node){
 		box.getChildren().add(node);
 	}
@@ -103,6 +111,20 @@ public class WindowController extends UserStreamAdapter implements Initializable
 		});
 	}
 
+	@FXML
+    public void onJavaBeam(ActionEvent event) {
+		TwitterUtil util=new TwitterUtil();
+		try {
+			util.tweet(TwitterManager.getInstance().getTwitter(), "JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwww");
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * ショートカットキーでツイート
+	 * @param event
+	 */
 	public void onChangeText(KeyEvent event){
 		if(event.isShortcutDown()){
 			TwitterUtil util=new TwitterUtil();
@@ -116,6 +138,11 @@ public class WindowController extends UserStreamAdapter implements Initializable
 		}
 	}
 
+	/**
+	 * Statusからオブジェクトを作成
+	 * @param status
+	 * @return
+	 */
 	private Parent getObject(Status status){
 		JavatterFxmlLoader<TweetObjectController> loader=new JavatterFxmlLoader<>();
 		Parent p=null;
