@@ -16,18 +16,12 @@ import twitter4j.UserStreamListener;
 
 import com.github.orekyuu.javatterfx.account.AccountManager;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
+import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.stream.EventStatus;
 
 public class JavatterUserStream implements UserStreamListener{
 
 	private List<UserStreamAdapter> controllers=new LinkedList<UserStreamAdapter>();
-
-	/**
-	 * ユーザーストリームを追加
-	 * @param controller
-	 */
-	public void addUserStreamAdapter(UserStreamAdapter controller){
-		controllers.add(controller);
-	}
 
 	/**
 	 * ユーザーストリームを開始する
@@ -67,10 +61,8 @@ public class JavatterUserStream implements UserStreamListener{
 
 	@Override
 	public void onStatus(Status arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onStatus(arg0);
-		}
+		EventStatus event=new EventStatus(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override

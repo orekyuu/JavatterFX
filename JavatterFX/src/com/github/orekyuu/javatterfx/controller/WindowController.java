@@ -20,15 +20,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.UserStreamAdapter;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
+import com.github.orekyuu.javatterfx.event.EventHandler;
+import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.Listener;
+import com.github.orekyuu.javatterfx.event.stream.EventStatus;
+import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
+import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
 import com.github.orekyuu.javatterfx.main.Main;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 
-public class WindowController extends UserStreamAdapter implements Initializable{
+public class WindowController implements Initializable, Listener{
 
 	@FXML
 	private BorderPane root;
@@ -81,7 +86,7 @@ public class WindowController extends UserStreamAdapter implements Initializable
 					createObject(replycontroller, JavatterFxmlLoader.load("TweetObject.fxml"));
 				}
 			}
-			Main.getUserStream().addUserStreamAdapter(this);
+			EventManager.INSTANCE.addEventListener(this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -95,8 +100,9 @@ public class WindowController extends UserStreamAdapter implements Initializable
 		box.getChildren().add(node);
 	}
 
-	@Override
-	public void onStatus(final Status status){
+	@EventHandler
+	public void onStatus(EventStatus event){
+		final Status status=event.getStatus();
 		Platform.runLater(new Runnable() {
 
 			@Override
@@ -120,7 +126,7 @@ public class WindowController extends UserStreamAdapter implements Initializable
 
 	@FXML
     public void onTweet(ActionEvent event) {
-		tweet();
+		tweet(EventType.BUTTON);
 	}
 
 	/**
@@ -130,7 +136,7 @@ public class WindowController extends UserStreamAdapter implements Initializable
 	public void onChangeText(KeyEvent event){
 		if(event.isShiftDown()||event.isControlDown()){
 			if(KeyCode.ENTER==event.getCode()){
-				tweet();
+				tweet(EventType.SHORTCUT);
 				event.consume();
 			}
 			if(KeyCode.J==event.getCode()){
@@ -149,10 +155,12 @@ public class WindowController extends UserStreamAdapter implements Initializable
 		}
 	}
 
-	private void tweet(){
+	private void tweet(EventType type){
 		TwitterUtil util=new TwitterUtil();
 		try {
-			util.tweet(TwitterManager.getInstance().getTwitter(), tweet.getText());
+			EventUserTweet event=new EventUserTweet(tweet.getText(),TwitterManager.getInstance().getUser(),type);
+			EventManager.INSTANCE.eventFire(event);
+			util.tweet(TwitterManager.getInstance().getTwitter(), event.getText());
 		} catch (TwitterException e) {
 			e.printStackTrace();
 		}

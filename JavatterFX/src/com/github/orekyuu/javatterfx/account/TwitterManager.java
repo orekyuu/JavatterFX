@@ -1,7 +1,9 @@
 package com.github.orekyuu.javatterfx.account;
 
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
+import twitter4j.User;
 import twitter4j.auth.AccessToken;
 
 /**
@@ -16,6 +18,7 @@ public class TwitterManager {
 
 	private String consumerKey="LVWccGK2KDACq3sEblpw";
 	private String consumerSecret="fj4UDvwc6d6VfRg7xk25c7BHOcz9IHLZQAuAiJqDs";
+	private User user;
 
 	private TwitterManager(){
 		twitter=TwitterFactory.getSingleton();
@@ -54,11 +57,20 @@ public class TwitterManager {
 		return consumerSecret;
 	}
 
+	public User getUser(){
+		return user;
+	}
+
 	/**
 	 * アクセストークンを使って認証します
 	 * @param token アクセストークン
 	 */
 	public void authentication(AccessToken token){
 		getTwitter().setOAuthAccessToken(token);
+		try {
+			user=twitter.showUser(token.getUserId());
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
 	}
 }
