@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import orekyuu.plugin.loader.PluginLoader;
 import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
 
@@ -87,6 +88,8 @@ public class Main extends Application{
 			@Override
 			public void run() {
 				try {
+					PluginLoader loader=new PluginLoader();
+					loader.load();
 					TwitterUtil.loadHomeTimeLine(TwitterManager.getInstance().getTwitter());
 					TwitterUtil.loadMensions(TwitterManager.getInstance().getTwitter());
 				} catch (TwitterException e) {

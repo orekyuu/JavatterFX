@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
@@ -21,7 +22,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import twitter4j.Status;
-import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
@@ -31,6 +31,7 @@ import com.github.orekyuu.javatterfx.event.Listener;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadHomeTimeline;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
 import com.github.orekyuu.javatterfx.event.stream.EventStatus;
+import com.github.orekyuu.javatterfx.event.system.EventPluginLoad;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
@@ -136,6 +137,18 @@ public class WindowController implements Initializable, Listener{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		});
+	}
+
+	@EventHandler
+	public void onPluginLoad(final EventPluginLoad event){
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				MenuItem item=new MenuItem(event.getName());
+				plugin.getItems().add(item);
 			}
 		});
 	}

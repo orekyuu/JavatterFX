@@ -1,15 +1,72 @@
 package orekyuu.plugin.loader;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class PluginLoader{
-
 	public void load(){
+		File file=new File("plugins");
+		if(!file.exists())file.mkdir();
+
+		URLClassLoader loader=(URLClassLoader) getClass().getClassLoader();
+		for(File f:file.listFiles()){
+			if(f.getName().endsWith(".jar")){
+				loadPlugin(f,loader);
+			}
+		}
 		pluginPostInit();
+	}
+
+	private void loadPlugin(File f,URLClassLoader loader) {
+		try {
+			addLibrary(f, loader);
+			if(f.isFile()&&((f.getName().endsWith(".jar")) || (f.getName().endsWith(".zip")))){
+				InputStream input = new FileInputStream(f);
+				ZipInputStream zip = new ZipInputStream(input);
+				ZipEntry entry = null;
+				while (true) {
+					entry = zip.getNextEntry();
+					if (entry == null) {
+						break;
+					}
+					String name = entry.getName();
+					if ((!entry.isDirectory()) && (name.endsWith(".class")))
+						loadPlugin(loader, name);
+				}
+				input.close();
+			}
+		} catch (NoSuchMethodException | SecurityException
+				| IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void loadPlugin(URLClassLoader loader, String name) {
+		try {
+			Class clazz=loader.loadClass(name.replace(".class", "").replace('/', '.'));
+			addPlugin(clazz);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void addLibrary(File file,ClassLoader loader) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, MalformedURLException{
+		Method m=URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
+		m.setAccessible(true);
+		m.invoke(loader, new Object[]{file.toURI().toURL()});
 	}
 
 	/**
@@ -49,15 +106,15 @@ public class PluginLoader{
 			for(Method m:clazz.getMethods()){
 				if(equippedAnnotations(m.getAnnotations(),
 						orekyuu.plugin.loader.Plugin.PreInit.class)!=null){
-						m.invoke(obj, (Object[])null);
+					m.invoke(obj, (Object[])null);
 				}
 			}
-			PluginRegister.INSTANCE.registerPlugin(p.name(), obj);//Pluginを登録する
+			PluginRegister.INSTANCE.registerPlugin(p.name(),p.version(), obj);//Pluginを登録する
 			//Initを実行
 			for(Method m:clazz.getMethods()){
 				if(equippedAnnotations(m.getAnnotations(),
 						orekyuu.plugin.loader.Plugin.Init.class)!=null){
-						m.invoke(obj, (Object[])null);
+					m.invoke(obj, (Object[])null);
 				}
 			}
 		} catch (InstantiationException e1) {
