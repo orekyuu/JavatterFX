@@ -1,9 +1,16 @@
 package com.github.orekyuu.javatterfx.main;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import twitter4j.TwitterException;
 import twitter4j.auth.AccessToken;
 
 import com.github.orekyuu.javatterfx.account.AccountManager;
@@ -11,6 +18,7 @@ import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.SaveDataManager;
+import com.github.orekyuu.javatterfx.util.TwitterUtil;
 import com.github.orekyuu.javatterfx.view.JavatterCss;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
@@ -55,18 +63,42 @@ public class Main extends Application{
 		}
 
 		if(!DEBUG)
-			startUserStream();
+		{
+			startingLoadAndStartUserStream();
+		}
 	}
 
-	private void startUserStream(){
-		Thread th = new Thread()
-		{
+	private void startingLoadAndStartUserStream(){
+		BlockingQueue<Runnable> queue=new LinkedBlockingQueue<>();
+		ThreadPoolExecutor executor=new ThreadPoolExecutor(3, 3, 1, TimeUnit.MINUTES, queue,new ThreadFactory() {
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread th=new Thread(r);
+				th.setDaemon(true);
+				return th;
+			}
+		});
+		executor.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					TwitterUtil.loadHomeTimeLine(TwitterManager.getInstance().getTwitter());
+					TwitterUtil.loadMensions(TwitterManager.getInstance().getTwitter());
+				} catch (TwitterException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		executor.execute(new Runnable() {
+
+			@Override
 			public void run() {
 				Main.getUserStream().start();
 			}
-		};
-		th.setDaemon(true);
-		th.start();
+		});
+		executor.shutdown();
 	}
 
 	public static void main(String[] args){

@@ -3,8 +3,6 @@ package com.github.orekyuu.javatterfx.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.tk.Toolkit;
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -42,6 +40,9 @@ public class JavatterLineController implements Initializable{
 
 	public void addObject(Parent p) {
 		box.getChildren().add(0, p);
+	}
+	public void addLast(Parent p) {
+		box.getChildren().add(p);
 	}
 
 }

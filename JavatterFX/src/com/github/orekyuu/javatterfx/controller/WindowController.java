@@ -26,13 +26,14 @@ import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.Listener;
+import com.github.orekyuu.javatterfx.event.stream.EventLoadHomeTimeline;
+import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
 import com.github.orekyuu.javatterfx.event.stream.EventStatus;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
 import com.github.orekyuu.javatterfx.main.Main;
 import com.github.orekyuu.javatterfx.util.StatusUpdateBuilder;
 import com.github.orekyuu.javatterfx.util.TweetDispenser;
-import com.github.orekyuu.javatterfx.util.TwitterUtil;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 
@@ -103,6 +104,10 @@ public class WindowController implements Initializable, Listener{
 		box.getChildren().add(node);
 	}
 
+	/**
+	 * ユーザーストリームのイベントを受け取る
+	 * @param event
+	 */
 	@EventHandler
 	public void onStatus(EventStatus event){
 		final Status status=event.getStatus();
@@ -115,6 +120,38 @@ public class WindowController implements Initializable, Listener{
 						createObject(replycontroller, getObject(status));
 					}
 					createObject(timelinecontroller,getObject(status));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	@EventHandler
+	public void onLoadHomeTimeline(EventLoadHomeTimeline event){
+		final Status status=event.getStatus();
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					createObjectLast(timelinecontroller,getObject(status));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	@EventHandler
+	public void onLoadMensions(EventLoadMensions event){
+		final Status status=event.getStatus();
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					createObjectLast(replycontroller,getObject(status));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -189,6 +226,10 @@ public class WindowController implements Initializable, Listener{
 
 	private void createObject(JavatterLineController controller,Parent p) throws IOException{
 		controller.addObject(p);
+	}
+
+	private void createObjectLast(JavatterLineController controller,Parent p) throws IOException{
+		controller.addLast(p);
 	}
 
 	private boolean isReply(Status status) throws IllegalStateException, TwitterException{
