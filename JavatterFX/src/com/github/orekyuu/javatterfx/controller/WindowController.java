@@ -236,13 +236,23 @@ public class WindowController implements Initializable, Listener{
 			e1.printStackTrace();
 		}
 		TweetObjectController c=loader.getController();
-		c.setAccountName("@"+status.getUser().getScreenName());
-		c.setUserName(status.getUser().getName());
-		c.setTweet(status.getText());
-		c.setVia(status.getSource());
-		c.setStatus(status);
 		try {
-			c.setImage(status.getUser().getProfileImageURL());
+			if(!status.isRetweet()){
+				c.setAccountName("@"+status.getUser().getScreenName());
+				c.setUserName(status.getUser().getName());
+				c.setVia(status.getSource());
+				c.setTweet(status.getText());
+				c.setStatus(status);
+				c.setImage(status.getUser().getProfileImageURL());
+			}else{
+				c.setAccountName("@"+status.getRetweetedStatus().getUser().getScreenName());
+				c.setUserName(status.getRetweetedStatus().getUser().getName());
+				c.setVia(status.getRetweetedStatus().getSource());
+				c.setTweet(status.getRetweetedStatus().getText());
+				c.setStatus(status);
+				c.setImage(status.getRetweetedStatus().getUser().getProfileImageURL());
+				c.setMinImage(status.getUser().getProfileImageURL());
+			}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

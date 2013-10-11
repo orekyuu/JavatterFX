@@ -30,6 +30,8 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
     @FXML
     private ImageView image;
     @FXML
+    private ImageView minimage;
+    @FXML
 	private BorderPane border;
     @FXML
     private HBox box2;
@@ -67,6 +69,11 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	public void setImage(String s) throws Exception{
 		URL url=new URL(s);
 		image.setImage(IconCache.getInstance().getIcon(url));
+	}
+
+	public void setMinImage(String s) throws Exception{
+		URL url=new URL(s);
+		minimage.setImage(IconCache.getInstance().getIcon(url));
 	}
 
 	public void onReply(ActionEvent event){

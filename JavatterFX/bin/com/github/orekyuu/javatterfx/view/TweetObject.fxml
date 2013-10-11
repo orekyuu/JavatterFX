@@ -66,10 +66,15 @@
     </BorderPane>
   </center>
   <left>
-    <ImageView fx:id="image" cache="false" fitHeight="49.999900000002526" fitWidth="49.999900000002526" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="TOP_LEFT">
-      <BorderPane.margin>
-        <Insets top="10.0" />
-      </BorderPane.margin>
-    </ImageView>
+    <StackPane prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <ImageView fx:id="image" cache="false" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT" />
+        <ImageView fx:id="minimage" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" y="0.0" StackPane.alignment="TOP_LEFT">
+          <StackPane.margin>
+            <Insets top="52.0" />
+          </StackPane.margin>
+        </ImageView>
+      </children>
+    </StackPane>
   </left>
 </BorderPane>
