@@ -16,6 +16,8 @@ import twitter4j.auth.AccessToken;
 import com.github.orekyuu.javatterfx.account.AccountManager;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
+import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.listeners.JavaBeamRT;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.SaveDataManager;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
@@ -66,6 +68,7 @@ public class Main extends Application{
 		{
 			startingLoadAndStartUserStream();
 		}
+		EventManager.INSTANCE.addEventListener(new JavaBeamRT());
 	}
 
 	private void startingLoadAndStartUserStream(){

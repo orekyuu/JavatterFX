@@ -15,6 +15,7 @@ public class EventStatus implements Event{
 		this.status=status;
 		userName=status.getUser().getName();
 		account=status.getUser().getScreenName();
+		tweetText=status.getText();
 	}
 
 	public Status getStatus() {

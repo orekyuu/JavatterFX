@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -34,6 +35,7 @@ import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
 import com.github.orekyuu.javatterfx.main.Main;
+import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.StatusUpdateBuilder;
 import com.github.orekyuu.javatterfx.util.TweetDispenser;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
@@ -50,7 +52,7 @@ public class WindowController implements Initializable, Listener{
     @FXML
     private ToolBar bar;
     @FXML
-    private Button config;
+    private MenuButton config;
     @FXML
     private MenuButton plugin;
     @FXML
@@ -61,6 +63,10 @@ public class WindowController implements Initializable, Listener{
     private ScrollPane scroll;
     @FXML
     private HBox box;
+    @FXML
+    private CheckMenuItem beamRT;
+    @FXML
+    private CheckMenuItem useCache;
 
     private JavatterLineController timelinecontroller;
 
@@ -74,6 +80,9 @@ public class WindowController implements Initializable, Listener{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
+			useCache.setSelected(JavatterConfig.getInstance().getUseLocalCache());
+			beamRT.setSelected(JavatterConfig.getInstance().getJavaBeamRT());
+
 			{
 				JavatterFxmlLoader<JavatterLineController> loader=new JavatterFxmlLoader<>();
 				Parent p=loader.loadFxml("JavatterLine.fxml");
@@ -270,5 +279,13 @@ public class WindowController implements Initializable, Listener{
 	private boolean isReply(Status status) throws IllegalStateException, TwitterException{
 		String user=TwitterManager.getInstance().getTwitter().getScreenName();
 		return user.equals(status.getInReplyToScreenName());
+	}
+
+	public void onBeamConfig(ActionEvent event){
+		JavatterConfig.getInstance().setJavaBeamRT(beamRT.isSelected());
+	}
+
+	public void onCacheConfig(ActionEvent event){
+		JavatterConfig.getInstance().setUseLocalCache(useCache.isSelected());
 	}
 }

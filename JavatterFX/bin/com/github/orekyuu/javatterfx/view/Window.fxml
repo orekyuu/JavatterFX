@@ -26,7 +26,12 @@
         </TextArea>
         <ToolBar fx:id="bar" blendMode="SRC_OVER" cache="false" pickOnBounds="true">
           <items>
-            <Button fx:id="config" blendMode="SRC_OVER" mnemonicParsing="false" pickOnBounds="true" text="Config" />
+            <MenuButton fx:id="config" mnemonicParsing="false" text="Config">
+              <items>
+                <CheckMenuItem mnemonicParsing="false" onAction="#onBeamConfig" text="JavaビームをRTする" fx:id="beamRT" />
+                <CheckMenuItem mnemonicParsing="false" onAction="#onCacheConfig" text="ローカルキャッシュを使用する" fx:id="useCache" />
+              </items>
+            </MenuButton>
             <MenuButton fx:id="plugin" ellipsisString="" graphicTextGap="4.0" mnemonicParsing="false" text="Plugin" underline="false" />
             <Button fx:id="javabeam" mnemonicParsing="false" onAction="#onJavaBeam" text="JavaBeam">
               <font>

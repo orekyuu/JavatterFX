@@ -24,9 +24,6 @@ public class JavatterConfig {
 		savedata=new SaveData("JavatterConfig", new File("SaveData/JavatterConfig"));
 		SaveDataManager.getInstance().registerSaveData(savedata);
 		savedata.setDefaultValue("JavaBeamRT", false);
-		savedata.setDefaultValue("thanks", false);
-		savedata.setDefaultValue("isLoad", true);
-		savedata.setDefaultValue("useTaskbar", true);
 		savedata.setDefaultValue("useLocalCache", true);
 	}
 
@@ -52,39 +49,6 @@ public class JavatterConfig {
 	 */
 	public boolean getJavaBeamRT(){
 		return savedata.getBoolean("JavaBeamRT");
-	}
-
-	/**
-	 * お礼のフラグを設定する
-	 * @param flag
-	 */
-	public void setThanks(boolean flag){
-		savedata.setBoolean("thanks", flag);
-	}
-
-	/**
-	 * お礼の設定を返す
-	 * @return
-	 */
-	public boolean getThanks(){
-		return savedata.getBoolean("thanks");
-	}
-
-
-	/**
-	 * タスクバーのフラグを設定する
-	 * @param flag
-	 */
-	public void setUseTaskbar(boolean flag){
-		savedata.setBoolean("useTaskbar", flag);
-	}
-
-	/**
-	 * タスクバーの設定を返す
-	 * @return
-	 */
-	public boolean getUseTaskbar(){
-		return savedata.getBoolean("useTaskbar");
 	}
 
 	/**
