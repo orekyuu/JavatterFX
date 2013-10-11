@@ -17,7 +17,27 @@ import twitter4j.UserStreamListener;
 import com.github.orekyuu.javatterfx.account.AccountManager;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.stream.EventBlock;
+import com.github.orekyuu.javatterfx.event.stream.EventDirectMessage;
+import com.github.orekyuu.javatterfx.event.stream.EventFavorite;
+import com.github.orekyuu.javatterfx.event.stream.EventFollow;
+import com.github.orekyuu.javatterfx.event.stream.EventOnFriendList;
+import com.github.orekyuu.javatterfx.event.stream.EventScrubGeo;
+import com.github.orekyuu.javatterfx.event.stream.EventStallWarning;
 import com.github.orekyuu.javatterfx.event.stream.EventStatus;
+import com.github.orekyuu.javatterfx.event.stream.EventTrackLimitationNotice;
+import com.github.orekyuu.javatterfx.event.stream.EventTweetRemove;
+import com.github.orekyuu.javatterfx.event.stream.EventUnblock;
+import com.github.orekyuu.javatterfx.event.stream.EventUnfavorite;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListCreation;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListDeletion;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListMemberAddition;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListMemberDeletion;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListSubscription;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListUnscription;
+import com.github.orekyuu.javatterfx.event.stream.EventUserListUpdate;
+import com.github.orekyuu.javatterfx.event.stream.EventUserProfileUpdate;
+import com.github.orekyuu.javatterfx.event.stream.EventUserStreamException;
 
 public class JavatterUserStream implements UserStreamListener{
 
@@ -37,26 +57,20 @@ public class JavatterUserStream implements UserStreamListener{
 
 	@Override
 	public void onDeletionNotice(StatusDeletionNotice arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onDeletionNotice(arg0);
-		}
+		EventTweetRemove event=new EventTweetRemove(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onScrubGeo(long arg0, long arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onScrubGeo(arg0, arg1);
-		}
+		EventScrubGeo event=new EventScrubGeo(arg0, arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onStallWarning(StallWarning arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onStallWarning(arg0);
-		}
+		EventStallWarning event=new EventStallWarning(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
@@ -67,145 +81,108 @@ public class JavatterUserStream implements UserStreamListener{
 
 	@Override
 	public void onTrackLimitationNotice(int arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onTrackLimitationNotice(arg0);
-		}
+		EventTrackLimitationNotice event=new EventTrackLimitationNotice(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onException(Exception arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onException(arg0);
-		}
+		EventUserStreamException event=new EventUserStreamException(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onBlock(User arg0, User arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onBlock(arg0,arg1);
-		}
+		EventBlock event=new EventBlock(arg0,arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onDeletionNotice(long arg0, long arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onDeletionNotice(arg0,arg1);
-		}
+		//たぶん onDeletionNotice(StatusDeletionNotice arg0)と一緒なのでスルー
 	}
 
 	@Override
 	public void onDirectMessage(DirectMessage arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onDirectMessage(arg0);
-		}
+		EventDirectMessage event = new EventDirectMessage(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onFavorite(User arg0, User arg1, Status arg2) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onFavorite(arg0,arg1,arg2);
-		}
+		EventFavorite event=new EventFavorite(arg0,arg1,arg2);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onFollow(User arg0, User arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onFollow(arg0,arg1);
-		}
+		EventFollow event=new EventFollow(arg0,arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onFriendList(long[] arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onFriendList(arg0);
-		}
+		EventOnFriendList event=new EventOnFriendList(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUnblock(User arg0, User arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUnblock(arg0,arg1);
-		}
+		EventUnblock event=new EventUnblock(arg0, arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUnfavorite(User arg0, User arg1, Status arg2) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUnfavorite(arg0,arg1,arg2);
-		}
+		EventUnfavorite event=new EventUnfavorite(arg0, arg1, arg2);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListCreation(User arg0, UserList arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListCreation(arg0,arg1);
-		}
+		EventUserListCreation event=new EventUserListCreation(arg0, arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListDeletion(User arg0, UserList arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListDeletion(arg0,arg1);
-		}
+		EventUserListDeletion event=new EventUserListDeletion(arg0, arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListMemberAddition(User arg0, User arg1, UserList arg2) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListMemberAddition(arg0,arg1,arg2);
-		}
+		EventUserListMemberAddition event=new EventUserListMemberAddition(arg0, arg1, arg2);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListMemberDeletion(User arg0, User arg1, UserList arg2) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListMemberDeletion(arg0, arg1, arg2);
-		}
+		EventUserListMemberDeletion event=new EventUserListMemberDeletion(arg0, arg1, arg2);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListSubscription(User arg0, User arg1, UserList arg2) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListSubscription(arg0, arg1, arg2);
-		}
+		EventUserListSubscription event=new EventUserListSubscription(arg0, arg1, arg2);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListUnsubscription(User arg0, User arg1, UserList arg2) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListUnsubscription(arg0, arg1, arg2);
-		}
+		EventUserListUnscription event=new EventUserListUnscription(arg0, arg1, arg2);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserListUpdate(User arg0, UserList arg1) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserListUpdate(arg0, arg1);
-		}
+		EventUserListUpdate event=new EventUserListUpdate(arg0, arg1);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	@Override
 	public void onUserProfileUpdate(User arg0) {
-		int size=controllers.size();
-		for(int i=0;i<size;i++){
-			controllers.get(i).onUserProfileUpdate(arg0);
-		}
+		EventUserProfileUpdate event=new EventUserProfileUpdate(arg0);
+		EventManager.INSTANCE.eventFire(event);
 	}
 }
