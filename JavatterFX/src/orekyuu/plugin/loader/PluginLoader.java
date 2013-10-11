@@ -9,7 +9,6 @@ import java.util.List;
 public class PluginLoader{
 
 	public void load(){
-		addPlugin(orekyuu.plugin.loader.plugin.TestPlugin.class);
 		pluginPostInit();
 	}
 
