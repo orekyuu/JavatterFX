@@ -35,6 +35,7 @@ public class StatusUpdateBuilder {
 	 * @param status リプライ先のつぶやき
 	 */
 	public void setReplyID(Status status){
+		if(status==null)return;
 		replyID = status.getId();
 	}
 

@@ -1,22 +1,27 @@
 package com.github.orekyuu.javatterfx.controller;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.github.orekyuu.javatterfx.util.IconCache;
-
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import twitter4j.Status;
+import twitter4j.TwitterException;
 
-public class TweetObjectController implements Initializable{
+import com.github.orekyuu.javatterfx.account.TwitterManager;
+import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
+import com.github.orekyuu.javatterfx.util.IconCache;
+import com.github.orekyuu.javatterfx.util.TwitterUtil;
+
+public class TweetObjectController implements Initializable,Comparable<TweetObjectController>{
 
 	@FXML
 	private BorderPane root;
@@ -37,6 +42,7 @@ public class TweetObjectController implements Initializable{
     @FXML
     private Hyperlink via;
 
+    private Status status;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -61,5 +67,35 @@ public class TweetObjectController implements Initializable{
 	public void setImage(String s) throws Exception{
 		URL url=new URL(s);
 		image.setImage(IconCache.getInstance().getIcon(url));
+	}
+
+	public void onReply(ActionEvent event){
+		EventReplyClick e=new EventReplyClick(status, event);
+		EventManager.INSTANCE.eventFire(e);
+	}
+
+	public void onFavorite(ActionEvent event){
+		TwitterUtil.fav(TwitterManager.getInstance().getTwitter(), status);
+	}
+
+	public void onRetweet(ActionEvent event){
+		try {
+			TwitterUtil.rt(TwitterManager.getInstance().getTwitter(), status);
+		} catch (TwitterException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setStatus(Status status) {
+		this.status=status;
+	}
+
+	public Status getStatus(){
+		return status;
+	}
+
+	@Override
+	public int compareTo(TweetObjectController o) {
+		return (int) (status.getId()-o.getStatus().getId());
 	}
 }

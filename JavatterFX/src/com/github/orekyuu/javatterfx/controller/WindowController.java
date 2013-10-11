@@ -20,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import twitter4j.Status;
+import twitter4j.StatusUpdate;
 import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
@@ -29,6 +30,7 @@ import com.github.orekyuu.javatterfx.event.Listener;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadHomeTimeline;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
 import com.github.orekyuu.javatterfx.event.stream.EventStatus;
+import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
 import com.github.orekyuu.javatterfx.main.Main;
@@ -63,6 +65,8 @@ public class WindowController implements Initializable, Listener{
     private JavatterLineController timelinecontroller;
 
     private JavatterLineController replycontroller;
+
+    private Status reply;
 
     /**
      * 初期化処理
@@ -159,12 +163,30 @@ public class WindowController implements Initializable, Listener{
 		});
 	}
 
-	@FXML
+	@EventHandler
+	public void onReply(EventReplyClick event){
+		final Status status=event.getStatus();
+		reply=status;
+		Platform.runLater(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					StringBuilder builder=new StringBuilder();
+					builder.append(tweet.getText()).append("@").append(status.getUser().getScreenName())
+					.append(" ");
+					tweet.setText(builder.toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
     public void onJavaBeam(ActionEvent event) {
 		javaBeam();
 	}
 
-	@FXML
     public void onTweet(ActionEvent event) {
 		tweet(EventType.BUTTON);
 	}
@@ -194,8 +216,10 @@ public class WindowController implements Initializable, Listener{
 		EventUserTweet event=new EventUserTweet(tweet.getText(),TwitterManager.getInstance().getUser(),type);
 		EventManager.INSTANCE.eventFire(event);
 		StatusUpdateBuilder builder=new StatusUpdateBuilder(event.getText());
+		builder.setReplyID(reply);
 		TweetDispenser.tweet(builder.create());
 		tweet.setText("");
+		reply=null;
 	}
 
 	/**
@@ -216,6 +240,7 @@ public class WindowController implements Initializable, Listener{
 		c.setUserName(status.getUser().getName());
 		c.setTweet(status.getText());
 		c.setVia(status.getSource());
+		c.setStatus(status);
 		try {
 			c.setImage(status.getUser().getProfileImageURL());
 		} catch (Exception e1) {
