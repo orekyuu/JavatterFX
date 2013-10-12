@@ -37,6 +37,27 @@ public enum EventManager {
 	}
 
 	/**
+	 * イベントリスナを削除する
+	 * @param listener EventListener
+	 */
+	public void removeEventListener(Listener listener){
+		for(Method m:listener.getClass().getMethods()){
+			if(isEventMethod(m)&&m.getParameterTypes().length==1
+					&&isEvent(m.getParameterTypes()[0])){
+
+				Class<? extends Event> key=(Class<? extends Event>) m.getParameterTypes()[0];
+
+				List<EventValue> list=new ArrayList<>();
+				for(EventValue value:map.get(key)){
+					if(value.instance==listener)
+						list.add(value);
+				}
+				map.get(key).retainAll(list);
+			}
+		}
+	}
+
+	/**
 	 * イベントを発火させる
 	 * @param event 発火させたいイベントの引数
 	 */

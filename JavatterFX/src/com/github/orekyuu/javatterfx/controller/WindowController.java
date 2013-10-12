@@ -1,6 +1,9 @@
 package com.github.orekyuu.javatterfx.controller;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -25,6 +28,7 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
+import com.github.orekyuu.javatterfx.column.ColumnManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.Listener;
@@ -68,45 +72,30 @@ public class WindowController implements Initializable, Listener{
     private CheckMenuItem beamRT;
     @FXML
     private CheckMenuItem useCache;
-
-    private JavatterLineController timelinecontroller;
-
-    private JavatterLineController replycontroller;
+    @FXML
+    private MenuButton column;
 
     private Status reply;
-
     /**
      * 初期化処理
      */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		try {
-			useCache.setSelected(JavatterConfig.getInstance().getUseLocalCache());
-			beamRT.setSelected(JavatterConfig.getInstance().getJavaBeamRT());
+		useCache.setSelected(JavatterConfig.getInstance().getUseLocalCache());
+		beamRT.setSelected(JavatterConfig.getInstance().getJavaBeamRT());
+		addChilden(ColumnManager.INSTANCE.getColumFactory("TimeLine").createView());
+		addChilden(ColumnManager.INSTANCE.getColumFactory("Mensions").createView());
+		EventManager.INSTANCE.addEventListener(this);
+		for(String s:ColumnManager.INSTANCE.columList()){
+			final MenuItem item=new MenuItem(s);
+			item.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
 
-			{
-				JavatterFxmlLoader<JavatterLineController> loader=new JavatterFxmlLoader<>();
-				Parent p=loader.loadFxml("JavatterLine.fxml");
-				timelinecontroller=loader.getController();
-				timelinecontroller.setName("TimeLine");
-				addChilden(p);
-				if(Main.DEBUG){
-					createObject(timelinecontroller, JavatterFxmlLoader.load("TweetObject.fxml"));
+				@Override
+				public void handle(ActionEvent event) {
+					addChilden(ColumnManager.INSTANCE.getColumFactory(item.getText()).createView());
 				}
-			}
-			{
-				JavatterFxmlLoader<JavatterLineController> loader=new JavatterFxmlLoader<>();
-				Parent p=loader.loadFxml("JavatterLine.fxml");
-				replycontroller=loader.getController();
-				replycontroller.setName("Reply");
-				addChilden(p);
-				if(Main.DEBUG){
-					createObject(replycontroller, JavatterFxmlLoader.load("TweetObject.fxml"));
-				}
-			}
-			EventManager.INSTANCE.addEventListener(this);
-		} catch (IOException e) {
-			e.printStackTrace();
+			});
+			column.getItems().add(item);
 		}
 	}
 
@@ -118,29 +107,6 @@ public class WindowController implements Initializable, Listener{
 		box.getChildren().add(node);
 	}
 
-	/**
-	 * ユーザーストリームのイベントを受け取る
-	 * @param event
-	 */
-	@EventHandler
-	public void onStatus(EventStatus event){
-		final Status status=event.getStatus();
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					if(isReply(status)){
-						createObject(replycontroller, getObject(status));
-					}
-					createObject(timelinecontroller,getObject(status));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	@EventHandler
 	public void onPluginLoad(final EventPluginLoad event){
 		Platform.runLater(new Runnable() {
@@ -149,38 +115,6 @@ public class WindowController implements Initializable, Listener{
 			public void run() {
 				MenuItem item=new MenuItem(event.getName());
 				plugin.getItems().add(item);
-			}
-		});
-	}
-
-	@EventHandler
-	public void onLoadHomeTimeline(EventLoadHomeTimeline event){
-		final Status status=event.getStatus();
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					createObjectLast(timelinecontroller,getObject(status));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	@EventHandler
-	public void onLoadMensions(EventLoadMensions event){
-		final Status status=event.getStatus();
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					createObjectLast(replycontroller,getObject(status));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		});
 	}
@@ -242,56 +176,6 @@ public class WindowController implements Initializable, Listener{
 		TweetDispenser.tweet(builder.create());
 		tweet.setText("");
 		reply=null;
-	}
-
-	/**
-	 * Statusからオブジェクトを作成
-	 * @param status
-	 * @return
-	 */
-	private Parent getObject(Status status){
-		JavatterFxmlLoader<TweetObjectController> loader=new JavatterFxmlLoader<>();
-		Parent p=null;
-		try {
-			p = loader.loadFxml("TweetObject.fxml");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		TweetObjectController c=loader.getController();
-		try {
-			if(!status.isRetweet()){
-				c.setAccountName("@"+status.getUser().getScreenName());
-				c.setUserName(status.getUser().getName());
-				c.setVia(status.getSource());
-				c.setTweet(status.getText());
-				c.setStatus(status);
-				c.setImage(status.getUser().getProfileImageURL());
-			}else{
-				c.setAccountName("@"+status.getRetweetedStatus().getUser().getScreenName());
-				c.setUserName(status.getRetweetedStatus().getUser().getName());
-				c.setVia(status.getRetweetedStatus().getSource());
-				c.setTweet(status.getRetweetedStatus().getText());
-				c.setStatus(status);
-				c.setImage(status.getRetweetedStatus().getUser().getProfileImageURL());
-				c.setMinImage(status.getUser().getProfileImageURL());
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		return p;
-	}
-
-	private void createObject(JavatterLineController controller,Parent p) throws IOException{
-		controller.addObject(p);
-	}
-
-	private void createObjectLast(JavatterLineController controller,Parent p) throws IOException{
-		controller.addLast(p);
-	}
-
-	private boolean isReply(Status status) throws IllegalStateException, TwitterException{
-		String user=TwitterManager.getInstance().getTwitter().getScreenName();
-		return user.equals(status.getInReplyToScreenName());
 	}
 
 	public void onBeamConfig(ActionEvent event){

@@ -16,6 +16,9 @@ import twitter4j.auth.AccessToken;
 
 import com.github.orekyuu.javatterfx.account.AccountManager;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
+import com.github.orekyuu.javatterfx.column.ColumnManager;
+import com.github.orekyuu.javatterfx.column.MensionsColumnFactory;
+import com.github.orekyuu.javatterfx.column.TimeLineColumnFactory;
 import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.listeners.JavaBeamRT;
@@ -40,6 +43,8 @@ public class Main extends Application{
 		SaveDataManager.getInstance().init();
 		JavatterConfig.getInstance().init();
 		userstream=new JavatterUserStream();
+		ColumnManager.INSTANCE.put(new TimeLineColumnFactory());
+		ColumnManager.INSTANCE.put(new MensionsColumnFactory());
 
 		{
 			Parent parent=JavatterFxmlLoader.load("Window.fxml");
