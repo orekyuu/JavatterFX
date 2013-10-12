@@ -1,5 +1,7 @@
 package com.github.orekyuu.javatterfx.controller;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -8,10 +10,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
@@ -43,11 +47,12 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
     private Label text;
     @FXML
     private Hyperlink via;
+    @FXML
+    private HBox previewBox;
 
     private Status status;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 	}
 
 	public void setAccountName(String s){
@@ -93,8 +98,21 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 		}
 	}
 
-	public void setStatus(Status status) {
+	public void setStatus(Status status) throws MalformedURLException {
 		this.status=status;
+		for(MediaEntity entity:status.getMediaEntities()){
+			Image img=null;
+			try {
+				img = IconCache.getInstance().getIcon(new URL(entity.getMediaURL()));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			if(img==null)continue;
+			ImageView view=new ImageView(img);
+			view.setFitHeight(100);
+			view.setFitWidth(100);
+			previewBox.getChildren().add(view);
+		}
 	}
 
 	public Status getStatus(){

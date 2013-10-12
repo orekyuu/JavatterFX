@@ -9,8 +9,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
-<BorderPane id="BorderPane" fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="0.0" prefHeight="-1.0" prefWidth="10000.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.TweetObjectController">
+<BorderPane id="BorderPane" fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="0.0" prefHeight="-1.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.TweetObjectController">
   <center>
     <BorderPane fx:id="border" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0" BorderPane.alignment="TOP_LEFT">
       <bottom>
@@ -34,14 +35,15 @@
                 </MenuButton>
               </children>
             </HBox>
+            <HBox fx:id="previewBox" prefHeight="-1.0" prefWidth="-1.0" />
           </children>
         </VBox>
       </bottom>
       <center>
-        <Label fx:id="text" alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="TweetText" wrapText="true" BorderPane.alignment="TOP_LEFT">
-          <font>
-            <Font name="Meiryo" size="12.0" />
-          </font>
+        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" wrapText="true">
+          <BorderPane.margin>
+            <Insets right="5.0" />
+          </BorderPane.margin>
         </Label>
       </center>
       <top>
