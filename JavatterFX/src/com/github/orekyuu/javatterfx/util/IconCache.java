@@ -92,8 +92,9 @@ public class IconCache {
 		gc.drawImage(icon, 0, 0);
 		WritableImage wi=canvas.snapshot(null, new WritableImage((int)icon.getWidth(),(int)icon.getHeight()));
 		try {
-            ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", cache);
-        } catch (Exception s) {
-        }
+			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", cache);
+		} catch (Exception s) {
+			s.printStackTrace();
+		}
 	}
 }
