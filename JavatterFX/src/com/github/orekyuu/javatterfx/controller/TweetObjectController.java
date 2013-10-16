@@ -21,6 +21,8 @@ import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.user.EventFavoriteClick;
+import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.util.IconCache;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
@@ -87,11 +89,13 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	}
 
 	public void onFavorite(ActionEvent event){
+		EventManager.INSTANCE.eventFire(new EventFavoriteClick(status));
 		TwitterUtil.fav(TwitterManager.getInstance().getTwitter(), status);
 	}
 
 	public void onRetweet(ActionEvent event){
 		try {
+			EventManager.INSTANCE.eventFire(new EventRTClick(status));
 			TwitterUtil.rt(TwitterManager.getInstance().getTwitter(), status);
 		} catch (TwitterException e) {
 			e.printStackTrace();

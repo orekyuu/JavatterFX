@@ -21,6 +21,8 @@ import com.github.orekyuu.javatterfx.column.MensionsColumnFactory;
 import com.github.orekyuu.javatterfx.column.TimeLineColumnFactory;
 import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
 import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.system.EventStatusLoadEnd;
+import com.github.orekyuu.javatterfx.event.system.EventStatusLoadStart;
 import com.github.orekyuu.javatterfx.listeners.JavaBeamRT;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.SaveDataManager;
@@ -95,8 +97,10 @@ public class Main extends Application{
 				try {
 					PluginLoader loader=new PluginLoader();
 					loader.load();
+					EventManager.INSTANCE.eventFire(new EventStatusLoadStart());//StatusLoadStartイベントを発火
 					TwitterUtil.loadHomeTimeLine(TwitterManager.getInstance().getTwitter());
 					TwitterUtil.loadMensions(TwitterManager.getInstance().getTwitter());
+					EventManager.INSTANCE.eventFire(new EventStatusLoadEnd());//StatusLoadStartイベントを発火
 				} catch (TwitterException e) {
 					e.printStackTrace();
 				}
