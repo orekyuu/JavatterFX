@@ -1,9 +1,13 @@
 package com.github.orekyuu.javatterfx.controller;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,28 +35,30 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 
 	@FXML
 	private BorderPane root;
-    @FXML
-    private VBox box1;
-    @FXML
-    private ImageView image;
-    @FXML
-    private ImageView minimage;
-    @FXML
+	@FXML
+	private VBox box1;
+	@FXML
+	private ImageView image;
+	@FXML
+	private ImageView minimage;
+	@FXML
 	private BorderPane border;
-    @FXML
-    private HBox box2;
-    @FXML
-    private Label accountname;
-    @FXML
-    private Label username;
-    @FXML
-    private Label text;
-    @FXML
-    private Hyperlink via;
-    @FXML
-    private HBox previewBox;
+	@FXML
+	private HBox box2;
+	@FXML
+	private Label accountname;
+	@FXML
+	private Label username;
+	@FXML
+	private Label text;
+	@FXML
+	private Hyperlink via;
+	@FXML
+	private HBox previewBox;
 
-    private Status status;
+	private Status status;
+
+	private String viaURL;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 	}
@@ -70,29 +76,71 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	}
 
 	public void setVia(String s){
+		String regex="https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+";
+		Pattern p=Pattern.compile(regex);
+		Matcher matcher=p.matcher(s);
+		while (matcher.find()) {
+			viaURL=matcher.group();
+		}
 		via.setText("via "+s.replaceFirst("<a.*\">", "").replace("</a>", ""));
 	}
 
+	/**
+	 * viaをクリックするとURLを開く
+	 * @param event
+	 */
+	public void OnClickVia(ActionEvent event){
+		if(viaURL==null)return;
+		try {
+			URL url=new URL(viaURL);
+			Desktop.getDesktop().browse(url.toURI());
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * アイコン画像を設定
+	 * @param s
+	 * @throws Exception
+	 */
 	public void setImage(String s) throws Exception{
 		URL url=new URL(s);
 		image.setImage(IconCache.getInstance().getIcon(url));
 	}
 
+	/**
+	 * 小さいアイコン画像を設定
+	 * @param s
+	 * @throws Exception
+	 */
 	public void setMinImage(String s) throws Exception{
 		URL url=new URL(s);
 		minimage.setImage(IconCache.getInstance().getIcon(url));
 	}
 
+	/**
+	 * リプライボタンを押したらイベントを発生させる
+	 * @param event
+	 */
 	public void onReply(ActionEvent event){
 		EventReplyClick e=new EventReplyClick(status, event);
 		EventManager.INSTANCE.eventFire(e);
 	}
 
+	/**
+	 * ふぁぼを押したらイベントを発生させる
+	 * @param event
+	 */
 	public void onFavorite(ActionEvent event){
 		EventManager.INSTANCE.eventFire(new EventFavoriteClick(status));
 		TwitterUtil.fav(TwitterManager.getInstance().getTwitter(), status);
 	}
 
+	/**
+	 * RTを押したらイベントを発生させる
+	 * @param event
+	 */
 	public void onRetweet(ActionEvent event){
 		try {
 			EventManager.INSTANCE.eventFire(new EventRTClick(status));
