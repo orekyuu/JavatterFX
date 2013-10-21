@@ -20,7 +20,7 @@ public class TimeLineColumnFactory implements ColumFactory,Listener{
 		JavatterFxmlLoader<JavatterTimeLineController> loader=new JavatterFxmlLoader<>();
 		Parent p=null;
 		try {
-			p=loader.loadFxml("TimeLine.fxml");
+			p=loader.loadFxml("Timeline.fxml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
