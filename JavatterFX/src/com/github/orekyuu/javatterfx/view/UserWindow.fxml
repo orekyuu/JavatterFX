@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.*?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml">
-	<!-- TODO Add Nodes -->
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.UserWindowController">
+  <!-- TODO Add Nodes -->
+  <center>
+    <VBox fx:id="page" prefHeight="200.0" prefWidth="100.0">
+      <children>
+        <ToolBar fx:id="bar">
+          <items>
+            <ToggleButton fx:id="userinfo" mnemonicParsing="false" text="User" />
+          </items>
+        </ToolBar>
+        <Pane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0" />
+      </children>
+    </VBox>
+  </center>
+  <top>
+    <HBox prefHeight="48.0" prefWidth="300.0">
+      <children>
+        <ImageView fx:id="icon" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" />
+        <VBox maxWidth="1.7976931348623157E308" prefHeight="48.0" prefWidth="252.0">
+          <children>
+            <Label fx:id="account" text="\@Hoge">
+              <font>
+                <Font size="18.0" fx:id="x1" />
+              </font>
+            </Label>
+            <Label fx:id="name" font="$x1" text="ほげほげ" />
+          </children>
+        </VBox>
+      </children>
+    </HBox>
+  </top>
 </BorderPane>
-

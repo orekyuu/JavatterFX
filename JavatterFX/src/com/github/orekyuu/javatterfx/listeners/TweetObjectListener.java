@@ -8,10 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import com.github.orekyuu.javatterfx.controller.UserWindowController;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.Listener;
-import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
+import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 public class TweetObjectListener implements Listener{
@@ -19,7 +20,9 @@ public class TweetObjectListener implements Listener{
 	@EventHandler
 	public void openUserWindow(EventIconClick click){
 		try {
-			Parent p = JavatterFxmlLoader.load("UserWindow.fxml");
+			JavatterFxmlLoader<UserWindowController> loader=new JavatterFxmlLoader<>();
+			Parent p = loader.loadFxml("UserWindow.fxml");
+			loader.getController().setUser(click.getUser());
 			Scene scene=new Scene(p);
 			Stage stage=new Stage();
 			stage.setScene(scene);
