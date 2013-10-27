@@ -1,9 +1,7 @@
 package com.github.orekyuu.javatterfx.controller;
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -16,6 +14,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -25,7 +24,9 @@ import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventManager;
+import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.event.user.EventFavoriteClick;
+import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.util.IconCache;
@@ -86,16 +87,22 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	}
 
 	/**
-	 * viaをクリックするとURLを開く
+	 * viaをクリックするとイベントを発生させる
 	 * @param event
 	 */
 	public void OnClickVia(ActionEvent event){
-		if(viaURL==null)return;
+		EventViaClick e=null;
+		if(viaURL==null){
+			e=new EventViaClick(null, via.getText());
+			EventManager.INSTANCE.eventFire(e);
+			return;
+		}
 		try {
 			URL url=new URL(viaURL);
-			Desktop.getDesktop().browse(url.toURI());
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
+			e=new EventViaClick(url, via.getText());
+			EventManager.INSTANCE.eventFire(e);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 	}
 
@@ -164,6 +171,19 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 			view.setFitHeight(100);
 			view.setFitWidth(100);
 			previewBox.getChildren().add(view);
+		}
+	}
+
+	public void imageClick(MouseEvent event){
+		Status rt=status.getRetweetedStatus();
+		if(event.getSource().equals(image)){
+			EventIconClick e=new EventIconClick(event.getSource(), rt==null?status.getUser():rt.getUser());
+			EventManager.INSTANCE.eventFire(e);
+		}else if(event.getSource().equals(minimage)){
+			if(rt!=null){
+				EventIconClick e=new EventIconClick(event.getSource(), status.getUser());
+				EventManager.INSTANCE.eventFire(e);
+			}
 		}
 	}
 

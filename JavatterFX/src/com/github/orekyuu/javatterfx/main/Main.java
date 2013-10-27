@@ -24,6 +24,7 @@ import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadEnd;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadStart;
 import com.github.orekyuu.javatterfx.listeners.JavaBeamRT;
+import com.github.orekyuu.javatterfx.listeners.TweetObjectListener;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.SaveDataManager;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
@@ -76,7 +77,12 @@ public class Main extends Application{
 		{
 			startingLoadAndStartUserStream();
 		}
+		registerListeners();
+	}
+
+	private void registerListeners(){
 		EventManager.INSTANCE.addEventListener(new JavaBeamRT());
+		EventManager.INSTANCE.addEventListener(new TweetObjectListener());
 	}
 
 	private void startingLoadAndStartUserStream(){

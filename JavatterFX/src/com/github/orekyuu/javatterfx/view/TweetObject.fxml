@@ -70,8 +70,8 @@
   <left>
     <StackPane prefHeight="-1.0" prefWidth="-1.0">
       <children>
-        <ImageView fx:id="image" cache="false" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT" />
-        <ImageView fx:id="minimage" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true" y="0.0" StackPane.alignment="TOP_LEFT">
+        <ImageView fx:id="image" cache="false" fitHeight="48.0" fitWidth="48.0" onMouseClicked="#imageClick" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT" />
+        <ImageView fx:id="minimage" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#imageClick" pickOnBounds="true" preserveRatio="true" y="0.0" StackPane.alignment="TOP_LEFT">
           <StackPane.margin>
             <Insets top="52.0" />
           </StackPane.margin>
