@@ -96,7 +96,7 @@ public final class TwitterUtil {
 	 * @throws TwitterException
 	 */
 	public static final void loadHomeTimeLine(Twitter twitter) throws TwitterException{
-		Paging page=new Paging(homeTimeLinePage,20);
+		Paging page=new Paging(homeTimeLinePage,10);
 		homeTimeLinePage++;
 		ResponseList<Status> status = twitter.getHomeTimeline(page);
 		for (int i=0;i<status.size();i++) {
@@ -111,7 +111,7 @@ public final class TwitterUtil {
 	 * @throws TwitterException
 	 */
 	public static final void loadMensions(Twitter twitter) throws TwitterException{
-		Paging page=new Paging(mensionPage,20);
+		Paging page=new Paging(mensionPage,10);
 		mensionPage++;
 		ResponseList<Status> status = twitter.getMentionsTimeline(page);
 		for (int i=0;i<status.size();i++) {
