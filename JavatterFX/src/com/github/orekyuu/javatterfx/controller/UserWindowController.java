@@ -2,8 +2,9 @@ package com.github.orekyuu.javatterfx.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
 import javafx.animation.TranslateTransition;
@@ -46,7 +47,7 @@ public class UserWindowController implements Initializable{
 	@FXML
 	private Pane pane;
 
-	private Map<ToggleButton,Node> map=new HashMap<>();
+	private Map<ToggleButton,Node> map=new LinkedHashMap<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -79,12 +80,22 @@ public class UserWindowController implements Initializable{
 		});
 		userinfo.setToggleGroup(group);
 
-		ToggleButton tl=new ToggleButton("tl");
+		ToggleButton tl=new ToggleButton("TL");
 		tl.setToggleGroup(group);
 		bar.getItems().add(tl);
 
-		map.put(userinfo, new Label("User"));
-		map.put(tl, new Label("TL"));
+		ToggleButton rep=new ToggleButton("Reply");
+		rep.setToggleGroup(group);
+		bar.getItems().add(rep);
+
+		ToggleButton fr=new ToggleButton("Follow");
+		fr.setToggleGroup(group);
+		bar.getItems().add(fr);
+
+		map.put(userinfo, new Label("======User======"));
+		map.put(tl, new Label("======TL======"));
+		map.put(rep, new Label("======リプ======"));
+		map.put(fr, new Label("======Follow======"));
 
 		userinfo.setSelected(true);
 		EventUserToolbarCreated event=new EventUserToolbarCreated(user, bar, group,map);
@@ -93,24 +104,66 @@ public class UserWindowController implements Initializable{
 		pane.getChildren().add(map.get(userinfo));
 	}
 
+	private final TranslateTransition intrans=new TranslateTransition(Duration.millis(300));
+	private final TranslateTransition outtrans=new TranslateTransition(Duration.millis(300));
 	private void animation(Node n,Node o){
-		TranslateTransition intrans=new TranslateTransition(Duration.millis(300),n);
-		intrans.setFromX(pane.getScene().getWindow().getWidth());
-		intrans.setToX(0);
-		intrans.play();
-		pane.getChildren().add(n);
+		if(n.equals(o)){
+			for(Entry<ToggleButton, Node> set:map.entrySet()){
+				if(set.getValue().equals(n)){
+					n=set.getValue();
+					break;
+				}
+			}
+		}
 
-		TranslateTransition outtrans=new TranslateTransition(Duration.millis(300),o);
+		pane.getChildren().removeAll(n,o);
+		intrans.setNode(n);
+
+		boolean left=isLeft(n, o);
+		if(left){
+			intrans.setFromX(pane.getScene().getWindow().getWidth());
+			intrans.setToX(0);
+		}else{
+			intrans.setFromX(-pane.getScene().getWindow().getWidth());
+			intrans.setToX(0);
+		}
+		intrans.playFromStart();
+
+		pane.getChildren().add(n);
+		pane.getChildren().add(o);
+
+		outtrans.setNode(o);
 		outtrans.setOnFinished(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				pane.getChildren().remove(0);
+				pane.getChildren().remove(outtrans.getNode());
 			}
 		});
-		outtrans.setFromX(0);
-		outtrans.setToX(-pane.getScene().getWindow().getWidth());
-		outtrans.play();
+		if(left){
+			outtrans.setFromX(0);
+			outtrans.setToX(-pane.getScene().getWindow().getWidth());
+		}else{
+			outtrans.setFromX(0);
+			outtrans.setToX(pane.getScene().getWindow().getWidth());
+		}
+		outtrans.playFromStart();
+	}
+
+	private boolean isLeft(Node n,Node o){
+		int nIndex=0;
+		int oIndex=0;
+		int i=0;
+		for(Entry<ToggleButton, Node> set:map.entrySet()){
+			if(set.getValue().equals(o)){
+				oIndex=i;
+			}
+			if(set.getValue().equals(n)){
+				nIndex=i;
+			}
+			i++;
+		}
+		return nIndex>oIndex;
 	}
 
 }
