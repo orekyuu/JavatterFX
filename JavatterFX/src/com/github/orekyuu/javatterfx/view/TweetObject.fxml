@@ -27,12 +27,7 @@
                 <Button cache="false" cancelButton="false" defaultButton="false" mnemonicParsing="false" onAction="#onReply" text="リプライ" />
                 <Button cache="false" mnemonicParsing="false" onAction="#onRetweet" text="RT" />
                 <Button cache="false" mnemonicParsing="false" onAction="#onFavorite" text="☆" />
-                <MenuButton cache="false" mnemonicParsing="false" text="...">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="JavaBeam" />
-                    <MenuItem mnemonicParsing="false" text="非公式RT" />
-                  </items>
-                </MenuButton>
+                <MenuButton fx:id="menu" cache="false" mnemonicParsing="false" text="..." />
               </children>
             </HBox>
             <HBox fx:id="previewBox" prefHeight="-1.0" prefWidth="-1.0" />
