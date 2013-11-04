@@ -28,6 +28,9 @@ public class TweetObjectListener implements Listener{
 			stage.setScene(scene);
 			stage.setTitle(click.getUser().getName());
 			stage.centerOnScreen();
+			stage.setWidth(340);
+			stage.setMaxWidth(340);
+			stage.setMinWidth(340);
 			stage.show();
 		} catch (IOException e) {
 			e.printStackTrace();

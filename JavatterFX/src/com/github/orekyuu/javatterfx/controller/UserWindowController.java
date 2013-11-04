@@ -29,6 +29,7 @@ import twitter4j.User;
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.view.EventUserToolbarCreated;
 import com.github.orekyuu.javatterfx.util.IconCache;
+import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 public class UserWindowController implements Initializable{
 
@@ -84,18 +85,50 @@ public class UserWindowController implements Initializable{
 		tl.setToggleGroup(group);
 		bar.getItems().add(tl);
 
-		ToggleButton rep=new ToggleButton("Reply");
-		rep.setToggleGroup(group);
-		bar.getItems().add(rep);
-
 		ToggleButton fr=new ToggleButton("Follow");
 		fr.setToggleGroup(group);
 		bar.getItems().add(fr);
 
-		map.put(userinfo, new Label("======User======"));
-		map.put(tl, new Label("======TL======"));
-		map.put(rep, new Label("======リプ======"));
-		map.put(fr, new Label("======Follow======"));
+		ToggleButton follower=new ToggleButton("Follower");
+		follower.setToggleGroup(group);
+		bar.getItems().add(follower);
+
+
+		try {
+			JavatterFxmlLoader<UserInfoTabController> infoTab=new JavatterFxmlLoader<>();
+			map.put(userinfo, infoTab.loadFxml("UserInfoTab.fxml"));
+			UserInfoTabController c=infoTab.getController();
+			c.setUser(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			JavatterFxmlLoader<UserTimelineController> timeline=new JavatterFxmlLoader<>();
+			map.put(tl, timeline.loadFxml("UserTimeline.fxml"));
+			UserTimelineController c=timeline.getController();
+			c.load(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			JavatterFxmlLoader<FollowTabController> follow=new JavatterFxmlLoader<>();
+			map.put(fr, follow.loadFxml("Follow.fxml"));
+			FollowTabController c=follow.getController();
+			c.load(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			JavatterFxmlLoader<FollowerTabController> follow=new JavatterFxmlLoader<>();
+			map.put(follower, follow.loadFxml("Follower.fxml"));
+			FollowerTabController c=follow.getController();
+			c.load(user);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 		userinfo.setSelected(true);
 		EventUserToolbarCreated event=new EventUserToolbarCreated(user, bar, group,map);
@@ -104,8 +137,9 @@ public class UserWindowController implements Initializable{
 		pane.getChildren().add(map.get(userinfo));
 	}
 
-	private final TranslateTransition intrans=new TranslateTransition(Duration.millis(300));
-	private final TranslateTransition outtrans=new TranslateTransition(Duration.millis(300));
+	private final int MOVETIME=600;;
+	private final TranslateTransition intrans=new TranslateTransition(Duration.millis(MOVETIME));
+	private final TranslateTransition outtrans=new TranslateTransition(Duration.millis(MOVETIME));
 	private void animation(Node n,Node o){
 		if(n.equals(o)){
 			for(Entry<ToggleButton, Node> set:map.entrySet()){

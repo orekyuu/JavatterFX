@@ -19,7 +19,7 @@ public class MensionsColumnFactory implements ColumFactory{
 		JavatterFxmlLoader<MensionsController> loader=new JavatterFxmlLoader<>();
 		Parent p=null;
 		try {
-			p=loader.loadFxml("Mensions.fxml");
+			p=loader.loadFxml("Mentions.fxml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

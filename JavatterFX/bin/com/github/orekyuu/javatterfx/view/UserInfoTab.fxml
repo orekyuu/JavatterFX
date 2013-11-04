@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<BorderPane id="BorderPane" fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="325.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.UserInfoTabController">
+  <center>
+    <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
+      <children>
+        <ImageView fx:id="img" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+        <Label fx:id="followLabel" prefWidth="300.0" text="フォローされていません" wrapText="true">
+          <font>
+            <Font name="Meiryo" size="12.0" fx:id="x1" />
+          </font>
+          <graphic>
+            <Button fx:id="follow" font="$x1" mnemonicParsing="false" onAction="#onFollowClick" text="フォローする" />
+          </graphic>
+        </Label>
+        <Label fx:id="account" prefWidth="300.0" text="\@Hoge">
+          <font>
+            <Font name="Meiryo" size="16.0" fx:id="x2" />
+          </font>
+        </Label>
+        <Label fx:id="userName" font="$x2" prefWidth="300.0" text="ほげほげ" wrapText="true" />
+        <Label font="$x1" prefWidth="325.0" text="ホームページ" />
+        <Hyperlink fx:id="hp" font="$x1" onAction="#HPClick" prefWidth="300.0" text="Hyperlink" />
+        <Label font="$x1" prefWidth="325.0" text="場所" />
+        <Label fx:id="location" font="$x1" prefWidth="300.0" text="不明" />
+        <Label fx:id="description" font="$x1" prefWidth="300.0" text="説明文" wrapText="true" />
+        <Label font="$x1" prefWidth="325.0" text="ツイート">
+          <VBox.margin>
+            <Insets top="5.0" />
+          </VBox.margin>
+        </Label>
+        <Label fx:id="tweetCount" font="$x1" prefWidth="325.0" text="0" />
+        <Label font="$x1" prefWidth="325.0" text="お気に入り" />
+        <Label fx:id="favCount" font="$x1" prefWidth="325.0" text="0" />
+        <Label font="$x1" prefWidth="325.0" text="フォロー" />
+        <Label fx:id="followCount" font="$x1" prefHeight="-1.0" prefWidth="325.0" text="０" />
+        <Label font="$x1" prefWidth="325.0" text="フォロワー" />
+        <Label fx:id="followerCount" font="$x1" prefWidth="325.0" text="０" />
+      </children>
+    </VBox>
+  </center>
+</BorderPane>
