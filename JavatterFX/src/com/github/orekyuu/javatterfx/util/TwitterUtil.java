@@ -18,9 +18,7 @@ import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
 public final class TwitterUtil {
 
 	private static int homeTimeLinePage=1;
-	private static long homeTimeLineOldID=Long.MAX_VALUE;
 	private static int mensionPage=1;
-	private static long mensionOldID=Long.MAX_VALUE;
 
 	/**
 	 * 指定されたStatusをリツイートします

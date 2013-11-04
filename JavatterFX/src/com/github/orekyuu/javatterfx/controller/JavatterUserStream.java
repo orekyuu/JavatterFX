@@ -1,8 +1,5 @@
 package com.github.orekyuu.javatterfx.controller;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import twitter4j.DirectMessage;
 import twitter4j.StallWarning;
 import twitter4j.Status;
@@ -11,7 +8,6 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.User;
 import twitter4j.UserList;
-import twitter4j.UserStreamAdapter;
 import twitter4j.UserStreamListener;
 
 import com.github.orekyuu.javatterfx.account.AccountManager;
@@ -40,8 +36,6 @@ import com.github.orekyuu.javatterfx.event.stream.EventUserProfileUpdate;
 import com.github.orekyuu.javatterfx.event.stream.EventUserStreamException;
 
 public class JavatterUserStream implements UserStreamListener{
-
-	private List<UserStreamAdapter> controllers=new LinkedList<UserStreamAdapter>();
 
 	/**
 	 * ユーザーストリームを開始する

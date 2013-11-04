@@ -1,9 +1,5 @@
 package com.github.orekyuu.javatterfx.controller;
-import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -11,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuButton;
@@ -25,25 +20,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import twitter4j.Status;
-import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.column.ColumnManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.Listener;
-import com.github.orekyuu.javatterfx.event.stream.EventLoadHomeTimeline;
-import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
-import com.github.orekyuu.javatterfx.event.stream.EventStatus;
 import com.github.orekyuu.javatterfx.event.system.EventPluginLoad;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
-import com.github.orekyuu.javatterfx.main.Main;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.StatusUpdateBuilder;
 import com.github.orekyuu.javatterfx.util.TweetDispenser;
-import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 
 public class WindowController implements Initializable, Listener{

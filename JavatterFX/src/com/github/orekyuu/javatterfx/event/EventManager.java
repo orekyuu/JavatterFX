@@ -23,6 +23,7 @@ public enum EventManager {
 			if(isEventMethod(m)&&m.getParameterTypes().length==1
 					&&isEvent(m.getParameterTypes()[0])){
 
+				@SuppressWarnings("unchecked")
 				Class<? extends Event> key=(Class<? extends Event>) m.getParameterTypes()[0];
 
 				//キーが無ければリストを新しく作っておく
@@ -45,6 +46,7 @@ public enum EventManager {
 			if(isEventMethod(m)&&m.getParameterTypes().length==1
 					&&isEvent(m.getParameterTypes()[0])){
 
+				@SuppressWarnings("unchecked")
 				Class<? extends Event> key=(Class<? extends Event>) m.getParameterTypes()[0];
 
 				List<EventValue> list=new ArrayList<>();
@@ -82,8 +84,8 @@ public enum EventManager {
 	 * @param target
 	 * @return
 	 */
-	private boolean isEvent(Class target){
-		Class parent=target.getSuperclass();
+	private boolean isEvent(Class<?> target){
+		Class<?> parent=target.getSuperclass();
 		while(parent==null||parent.equals(Event.class)){
 			parent=parent.getSuperclass();
 		}

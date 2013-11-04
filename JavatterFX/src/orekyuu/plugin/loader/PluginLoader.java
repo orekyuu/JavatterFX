@@ -56,7 +56,7 @@ public class PluginLoader{
 
 	private void loadPlugin(URLClassLoader loader, String name) {
 		try {
-			Class clazz=loader.loadClass(name.replace(".class", "").replace('/', '.'));
+			Class<?> clazz=loader.loadClass(name.replace(".class", "").replace('/', '.'));
 			addPlugin(clazz);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class PluginLoader{
 				if(equippedAnnotations(m.getAnnotations(), Plugin.PostInit.class)==null)
 					continue;
 				try {
-					m.invoke(obj, null);
+					m.invoke(obj, (Object[])null);
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				} catch (IllegalAccessException e) {
@@ -94,7 +94,7 @@ public class PluginLoader{
 	 * プラグインを追加する
 	 * @param clazz
 	 */
-	private void addPlugin(Class clazz){
+	private void addPlugin(Class<?> clazz){
 		Annotation plugin=getPluginAnnotation(clazz);//クラスに付けられているPluginアノテーションを取得する
 		if(plugin==null)return ;//なければリターン
 		Plugin p=(Plugin) plugin;
@@ -133,7 +133,7 @@ public class PluginLoader{
 	 * @param target 調べたい対象のクラス
 	 * @return
 	 */
-	private Annotation getPluginAnnotation(Class target){
+	private Annotation getPluginAnnotation(Class<?> target){
 		Annotation[] list=equippedAnnotations(target.getAnnotations(), Plugin.class);
 		if(list!=null){
 			return list[0];
@@ -147,7 +147,7 @@ public class PluginLoader{
 	 * @param target 調べたいアノテーションクラス
 	 * @return 見つかったアノテーションのリスト
 	 */
-	private Annotation[] equippedAnnotations(Annotation[] annotations,Class target){
+	private Annotation[] equippedAnnotations(Annotation[] annotations,Class<?> target){
 		List<Annotation> list=new ArrayList<Annotation>();
 		for(Annotation a:annotations){
 			if(a.annotationType().equals(target)){
