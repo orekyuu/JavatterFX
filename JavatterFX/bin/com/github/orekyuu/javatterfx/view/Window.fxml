@@ -33,13 +33,14 @@
               </items>
             </MenuButton>
             <MenuButton fx:id="plugin" ellipsisString="" graphicTextGap="4.0" mnemonicParsing="false" text="Plugin" underline="false" />
+            <MenuButton fx:id="column" mnemonicParsing="false" text="Column" />
+            <Button fx:id="koukoku" mnemonicParsing="false" onAction="#coukoku" text="広告" />
             <Button fx:id="javabeam" mnemonicParsing="false" onAction="#onJavaBeam" text="JavaBeam">
               <font>
                 <Font size="12.0" />
               </font>
             </Button>
             <Button fx:id="tweetbutton" mnemonicParsing="false" onAction="#onTweet" text="Tweet" />
-            <MenuButton fx:id="column" mnemonicParsing="false" text="Column" />
           </items>
         </ToolBar>
       </children>

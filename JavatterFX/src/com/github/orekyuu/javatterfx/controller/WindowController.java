@@ -74,6 +74,8 @@ public class WindowController implements Initializable, Listener{
     private CheckMenuItem useCache;
     @FXML
     private MenuButton column;
+    @FXML
+    private Button koukoku;
 
     private Status reply;
     /**
@@ -184,5 +186,9 @@ public class WindowController implements Initializable, Listener{
 
 	public void onCacheConfig(ActionEvent event){
 		JavatterConfig.getInstance().setUseLocalCache(useCache.isSelected());
+	}
+
+	public void coukoku(ActionEvent event){
+		TweetDispenser.tweet("嘘、私のJavaビーム...弱すぎ？ そんなあなたにJava力トレーニングソフトJavatterFX! 無料でJava力を鍛えて周りのみんなを圧倒しよう！ ダウンロードはこちら→http://www1221uj.sakura.ne.jp/wordpress/ #javatter");
 	}
 }
