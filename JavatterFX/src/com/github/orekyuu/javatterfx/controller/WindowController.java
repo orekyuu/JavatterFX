@@ -1,6 +1,8 @@
 package com.github.orekyuu.javatterfx.controller;
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,8 +16,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -67,6 +72,8 @@ public class WindowController implements Initializable, Listener{
     private Button koukoku;
 
     private Status reply;
+
+    private File file;
     /**
      * 初期化処理
      */
@@ -164,9 +171,11 @@ public class WindowController implements Initializable, Listener{
 		EventManager.INSTANCE.eventFire(event);
 		StatusUpdateBuilder builder=new StatusUpdateBuilder(event.getText());
 		builder.setReplyID(reply);
+		if(file!=null)builder.setImage(file);
 		TweetDispenser.tweet(builder.create());
 		tweet.setText("");
 		reply=null;
+		file=null;
 	}
 
 	public void onBeamConfig(ActionEvent event){
@@ -179,5 +188,28 @@ public class WindowController implements Initializable, Listener{
 
 	public void coukoku(ActionEvent event){
 		TweetDispenser.tweet("嘘、私のJavaビーム...弱すぎ？ そんなあなたにJava力トレーニングソフトJavatterFX! 無料でJava力を鍛えて周りのみんなを圧倒しよう！ ダウンロードはこちら→http://www1221uj.sakura.ne.jp/wordpress/ #javatter");
+	}
+
+	public void onImageDrop(DragEvent event){
+		boolean flag=false;
+		Dragboard db=event.getDragboard();
+		Pattern p=Pattern.compile("\\.(png|jpg|gif)$");
+		if(db.hasFiles()){
+			for(File f:db.getFiles()){
+				if(!p.matcher(f.getPath()).find())continue;
+				System.out.println(f.getName());
+				file=f;
+				break;
+			}
+		}
+		event.setDropCompleted(flag);
+		event.consume();
+	}
+
+	public void onImageDragOver(DragEvent event){
+		Dragboard db=event.getDragboard();
+		if(db.hasFiles())
+			event.acceptTransferModes(TransferMode.MOVE);
+		event.consume();
 	}
 }
