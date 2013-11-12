@@ -1,16 +1,17 @@
 package com.github.orekyuu.javatterfx.controller;
 
-import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
@@ -18,7 +19,7 @@ import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
 import com.github.orekyuu.javatterfx.event.stream.EventStatus;
-import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
+import com.github.orekyuu.javatterfx.view.TweetListCell;
 
 public class MensionsController extends AbstractColumnController{
 
@@ -26,30 +27,39 @@ public class MensionsController extends AbstractColumnController{
 	private BorderPane root;
 
 	@FXML
-	private ToolBar bar;
-
-	@FXML
 	private Label name;
 
 	@FXML
-	private VBox box;
+	private ListView<Status> box;
 
-	@FXML
-	private ScrollPane scroll;
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		super.initialize(arg0, arg1);
+		box.setCellFactory(new Callback<ListView<Status>, ListCell<Status>>() {
+
+			@Override
+			public ListCell<Status> call(ListView<Status> param) {
+				TweetListCell cell= new TweetListCell(box);
+				cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				return cell;
+			}
+		});
+	}
 
 	public void setName(String s){
 		name.setText(s);
 	}
 
-	public void addObject(Parent p) {
-		box.getChildren().add(0, p);
+	public void addObject(Status p) {
+		box.getItems().add(0, p);
 	}
-	public void addLast(Parent p) {
-		box.getChildren().add(p);
+	public void addLast(Status p) {
+		box.getItems().add(p);
 	}
 
 	public void onScrollTop(ActionEvent event){
-		scroll.setVvalue(0);
+		box.getSelectionModel().clearAndSelect(0);
+		box.scrollTo(0);
 	}
 
 	public void onClose(ActionEvent event){
@@ -65,7 +75,7 @@ public class MensionsController extends AbstractColumnController{
 			public void run() {
 				try {
 					if(isReply(status))
-					addObject(getObject(status));
+					addObject(status);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -86,43 +96,11 @@ public class MensionsController extends AbstractColumnController{
 			@Override
 			public void run() {
 				try {
-					addLast(getObject(status));
+					addLast(status);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
-
-	private Parent getObject(Status status){
-		JavatterFxmlLoader<TweetObjectController> loader=new JavatterFxmlLoader<>();
-		Parent p=null;
-		try {
-			p = loader.loadFxml("TweetObject.fxml");
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		TweetObjectController c=loader.getController();
-		try {
-			if(!status.isRetweet()){
-				c.setAccountName("@"+status.getUser().getScreenName());
-				c.setUserName(status.getUser().getName());
-				c.setVia(status.getSource());
-				c.setTweet(status.getText());
-				c.setStatus(status);
-				c.setImage(status.getUser().getProfileImageURL());
-			}else{
-				c.setAccountName("@"+status.getRetweetedStatus().getUser().getScreenName());
-				c.setUserName(status.getRetweetedStatus().getUser().getName());
-				c.setVia(status.getRetweetedStatus().getSource());
-				c.setTweet(status.getRetweetedStatus().getText());
-				c.setStatus(status);
-				c.setImage(status.getRetweetedStatus().getUser().getProfileImageURL());
-				c.setMinImage(status.getUser().getProfileImageURL());
-			}
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		return p;
 	}
 }

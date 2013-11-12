@@ -17,18 +17,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.TwitterException;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventManager;
-import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.event.user.EventFavoriteClick;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
+import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.util.IconCache;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 
@@ -37,15 +36,9 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	@FXML
 	private BorderPane root;
 	@FXML
-	private VBox box1;
-	@FXML
 	private ImageView image;
 	@FXML
 	private ImageView minimage;
-	@FXML
-	private BorderPane border;
-	@FXML
-	private HBox box2;
 	@FXML
 	private Label accountname;
 	@FXML
@@ -68,12 +61,20 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 		accountname.setText(s);
 	}
 
+	public BorderPane getRootPane(){
+		return root;
+	}
+
 	public void setUserName(String s){
 		username.setText(s);
 	}
 
 	public void setTweet(String s){
 		text.setText(s);
+	}
+
+	public Label getLabel(){
+		return text;
 	}
 
 	public void setVia(String s){

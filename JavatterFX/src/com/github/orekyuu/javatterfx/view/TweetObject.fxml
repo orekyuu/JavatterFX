@@ -17,7 +17,7 @@
       <bottom>
         <VBox fx:id="box1" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
           <children>
-            <Hyperlink fx:id="via" cache="false" maxWidth="1.7976931348623157E308" onAction="#OnClickVia" text="via hoge" textFill="GREY">
+            <Hyperlink fx:id="via" cache="false" maxWidth="-1.0" onAction="#OnClickVia" text="via hoge" textFill="GREY">
               <font>
                 <Font name="Meiryo Italic" size="12.0" />
               </font>

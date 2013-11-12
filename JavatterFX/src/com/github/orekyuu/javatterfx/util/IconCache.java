@@ -52,6 +52,7 @@ public class IconCache {
 		Image icon=null;
 		icon=getLocalIcon(url);
 		if(icon!=null){
+			cacheMap.put(url, icon);
 			return icon;
 		}
 
