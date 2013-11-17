@@ -1,6 +1,5 @@
 package com.github.orekyuu.javatterfx.controller;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -13,7 +12,7 @@ import twitter4j.User;
 
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
-import com.github.orekyuu.javatterfx.util.IconCache;
+import com.github.orekyuu.javatterfx.util.ImageTask;
 
 public class UserObjectController implements Initializable{
 
@@ -35,12 +34,8 @@ public class UserObjectController implements Initializable{
 
 	public void setUser(User user){
 		this.user=user;
-		try {
-			URL url = new URL(user.getProfileImageURL());
-			image.setImage(IconCache.getInstance().getIcon(url));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ImageTask task=new ImageTask(image,user.getProfileImageURL());
+		task.start();
 		account.setText(user.getScreenName());
 		name.setText(user.getName());
 		message.setText(user.getDescription());

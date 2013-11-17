@@ -18,7 +18,7 @@ import twitter4j.TwitterException;
 import twitter4j.User;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
-import com.github.orekyuu.javatterfx.util.IconCache;
+import com.github.orekyuu.javatterfx.util.ImageTask;
 
 public class UserInfoTabController implements Initializable{
 
@@ -60,12 +60,8 @@ public class UserInfoTabController implements Initializable{
 	 */
 	public void setUser(User user){
 		this.user=user;
-		try {
-			URL url = new URL(user.getProfileImageURL());
-			img.setImage(IconCache.getInstance().getIcon(url));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ImageTask task=new ImageTask(img,user.getProfileImageURL());
+		task.start();
 		Twitter twitter=TwitterManager.getInstance().getTwitter();
 		long myID=TwitterManager.getInstance().getUser().getId();
 		long userID=user.getId();

@@ -12,7 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -28,7 +27,7 @@ import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventViaClick;
-import com.github.orekyuu.javatterfx.util.IconCache;
+import com.github.orekyuu.javatterfx.util.ImageTask;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 
 public class TweetObjectController implements Initializable,Comparable<TweetObjectController>{
@@ -113,8 +112,8 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 * @throws Exception
 	 */
 	public void setImage(String s) throws Exception{
-		URL url=new URL(s);
-		image.setImage(IconCache.getInstance().getIcon(url));
+		ImageTask task=new ImageTask(image,s);
+		task.start();
 	}
 
 	/**
@@ -123,8 +122,8 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 * @throws Exception
 	 */
 	public void setMinImage(String s) throws Exception{
-		URL url=new URL(s);
-		minimage.setImage(IconCache.getInstance().getIcon(url));
+		ImageTask task=new ImageTask(minimage,s);
+		task.start();
 	}
 
 	/**
@@ -161,16 +160,11 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	public void setStatus(Status status) throws MalformedURLException {
 		this.status=status;
 		for(MediaEntity entity:status.getMediaEntities()){
-			Image img=null;
-			try {
-				img = IconCache.getInstance().getIcon(new URL(entity.getMediaURL()));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			if(img==null)continue;
-			ImageView view=new ImageView(img);
+			ImageView view=new ImageView();
 			view.setFitHeight(100);
 			view.setFitWidth(100);
+			ImageTask task=new ImageTask(view, entity.getMediaURL());
+			task.start();
 			previewBox.getChildren().add(view);
 		}
 	}

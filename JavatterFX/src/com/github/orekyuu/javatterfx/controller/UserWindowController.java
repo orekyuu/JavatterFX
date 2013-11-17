@@ -28,7 +28,7 @@ import twitter4j.User;
 
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.view.EventUserToolbarCreated;
-import com.github.orekyuu.javatterfx.util.IconCache;
+import com.github.orekyuu.javatterfx.util.ImageTask;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 public class UserWindowController implements Initializable{
@@ -57,11 +57,8 @@ public class UserWindowController implements Initializable{
 	public void setUser(User user){
 		account.setText(user.getScreenName());
 		name.setText(user.getName());
-		try {
-			icon.setImage(IconCache.getInstance().getIcon(new URL(user.getProfileImageURL())));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		ImageTask task=new ImageTask(icon,user.getProfileImageURL());
+		task.start();
 
 		ToggleGroup group=new ToggleGroup();
 		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
