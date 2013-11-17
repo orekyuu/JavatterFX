@@ -150,7 +150,7 @@ public class WindowController implements Initializable, Listener{
 	 * @param event
 	 */
 	public void onChangeText(KeyEvent event){
-		if(event.isShiftDown()||event.isControlDown()){
+		if(event.isControlDown()){
 			if(KeyCode.ENTER==event.getCode()){
 				tweet(EventType.SHORTCUT);
 				event.consume();
