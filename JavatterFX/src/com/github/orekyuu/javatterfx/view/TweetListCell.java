@@ -1,6 +1,8 @@
 package com.github.orekyuu.javatterfx.view;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
@@ -12,6 +14,9 @@ import com.github.orekyuu.javatterfx.controller.TweetObjectController;
 public class TweetListCell extends ListCell<Status>{
 
 	private ListView<Status> parent;
+
+	private static Map<Long,Parent> map=new TreeMap<>();
+
 	public TweetListCell(ListView<Status> view){
 		parent=view;
 	}
@@ -29,6 +34,13 @@ public class TweetListCell extends ListCell<Status>{
 
 		setText(null);
 		setGraphic(null);
+
+		if(map.containsKey(status.getId())){
+			setGraphic(map.get(status.getId()));
+			layout();
+			return;
+		}
+
 		JavatterFxmlLoader<TweetObjectController> loader=new JavatterFxmlLoader<>();
 		Parent p=null;
 		try {
@@ -61,5 +73,6 @@ public class TweetListCell extends ListCell<Status>{
 		c.getLabel().maxWidthProperty().bind(parent.widthProperty());
 		c.getRootPane().maxHeightProperty().bind(maxHeightProperty());
 		setGraphic(p);
+		map.put(status.getId(), p);
 	}
 }
