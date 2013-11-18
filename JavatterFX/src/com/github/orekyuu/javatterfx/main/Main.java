@@ -123,6 +123,11 @@ public class Main extends Application{
 	}
 
 	public static void main(String[] args){
+		if (System.getProperty("os.name").equals("Mac OS X")) {
+			System.setProperty("javafx.macosx.embedded", "true");
+		    java.awt.Toolkit.getDefaultToolkit();
+		}
+		
 		launch(args);
 	}
 
