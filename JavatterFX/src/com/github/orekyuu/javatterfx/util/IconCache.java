@@ -2,19 +2,16 @@ package com.github.orekyuu.javatterfx.util;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-
-import javax.imageio.ImageIO;
 
 /**
  * アイコンのキャッシュ
@@ -46,56 +43,90 @@ public class IconCache {
 	 * @throws IOException
 	 */
 	public Image getIcon(URL url) throws IOException{
-		if(cacheMap.containsKey(url)){
-			return cacheMap.get(url);
+		// TODO ダサい
+		Image image = null;
+		if((image = getIconFromCacheMap(url)) != null) {
+			return image;
+		}else if((image = getIconFromLocalCache(url)) != null) {
+			cacheMap.put(url, image);
+			return image;
+		}else if((image = getIconFromHttp(url)) != null) {
+			cacheMap.put(url, image);
+			return image;
 		}
-		Image icon=null;
-		icon=getLocalIcon(url);
-		/*if(icon!=null){
-			cacheMap.put(url, icon);
-			return icon;
-		}*/
-
-		HttpURLConnection http=(HttpURLConnection) url.openConnection();
-		http.setRequestMethod("GET");
-		http.connect();
-		icon=new Image(http.getInputStream());
-		http.disconnect();
-
-		cacheMap.put(url, icon);
-		if(JavatterConfig.getInstance().getUseLocalCache()){
-			saveLocalIcon(url, icon);
-		}
-		return icon;
+		throw new IOException("不明な読み込みエラー");
+	}
+	
+	/**
+	 * cacheMapからアイコンを取得する
+	 * @param url
+	 * @return キャッシュが存在する場合はImage、それ以外はnull
+	 */
+	private Image getIconFromCacheMap(URL url) {
+		return cacheMap.get(url);
+	}
+	
+	/**
+	 * LocalCacheからアイコンを取得する
+	 * @param url
+	 * @return キャッシュが存在する場合はImage、それ以外はnull
+	 */
+	private Image getIconFromLocalCache(URL url) {
+		return getIconFromLocalCache(url, false);
 	}
 
-	private Image getLocalIcon(URL url){
-		String fileName=url.toString().replace('/', '_').replace(':', '_')+".png";
-		File cache=new File(cacheDir, fileName);
-		if(cache.exists()){
+	/**
+	 * LocalCacheからアイコンを取得する
+	 * @param url
+	 * @param force 強制的にLocalCacheから取得する
+	 * @return キャッシュが存在する場合はImage、それ以外はnull
+	 */
+	private Image getIconFromLocalCache(URL url, boolean force) {
+		if(!JavatterConfig.getInstance().getUseLocalCache() && !force) {
+			return null;
+		}
+		
+		File cacheFile = getCacheFile(url);
+		if(!cacheFile.exists() ) {
+			return null;
+		}else{
 			try {
-				Image icon=new Image(new FileInputStream(cache));
-				return icon;
-			} catch (IOException e) {
+				return new Image(new FileInputStream(cacheFile));
+			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+				return null;
 			}
 		}
-		return null;
-
+	}
+	
+	private Image getIconFromHttp(URL url) {
+		try {
+			if(JavatterConfig.getInstance().getUseLocalCache() && saveCacheFile(url)){
+				return getIconFromLocalCache(url);
+			}
+		
+			Image image = new Image(url.openStream());
+			return image;
+		} catch (IOException e) {
+			// TODO 接続失敗
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	private boolean saveCacheFile(URL url) throws IOException {
+		InputStream stream = url.openStream();
+		try {
+			Files.copy(stream, Paths.get(getCacheFile(url).getPath()));
+			return true;
+		}catch(IOException ex) {
+			return false;
+		}
 	}
 
-	private void saveLocalIcon(URL url, Image icon){
-		String fileName=url.toString().replace('/', '_').replace(':', '_')+".png";
+	private File getCacheFile(URL url) {
+		String fileName=url.toString().replace('/', '_').replace(':', '_');
 		File cache=new File(cacheDir, fileName);
-		cacheDir.mkdirs();
-		Canvas canvas=new Canvas(icon.getWidth(),icon.getHeight());
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		gc.drawImage(icon, 0, 0);
-		WritableImage wi=canvas.snapshot(null, new WritableImage((int)icon.getWidth(),(int)icon.getHeight()));
-		try {
-			ImageIO.write(SwingFXUtils.fromFXImage(wi, null), "png", cache);
-		} catch (Exception s) {
-			s.printStackTrace();
-		}
+		return cache;
 	}
 }
