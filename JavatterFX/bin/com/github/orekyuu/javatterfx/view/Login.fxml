@@ -17,11 +17,4 @@
       </effect>
     </TextField>
   </center>
-  <right>
-    <Button fx:id="button" mnemonicParsing="false" onAction="#authentication" text="Button" BorderPane.alignment="CENTER">
-      <BorderPane.margin>
-        <Insets />
-      </BorderPane.margin>
-    </Button>
-  </right>
 </BorderPane>
