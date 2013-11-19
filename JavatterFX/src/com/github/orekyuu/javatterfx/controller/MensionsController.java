@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import twitter4j.Status;
@@ -39,7 +38,7 @@ public class MensionsController extends AbstractColumnController{
 
 			@Override
 			public ListCell<Status> call(ListView<Status> param) {
-				TweetListCell cell= new TweetListCell(box);
+				TweetListCell cell= new TweetListCell();
 				cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				return cell;
 			}

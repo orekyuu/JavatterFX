@@ -36,7 +36,7 @@ public class JavatterTimeLineController extends AbstractColumnController{
 
 			@Override
 			public ListCell<Status> call(ListView<Status> param) {
-				TweetListCell cell= new TweetListCell(box);
+				TweetListCell cell= new TweetListCell();
 				cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				return cell;
 			}

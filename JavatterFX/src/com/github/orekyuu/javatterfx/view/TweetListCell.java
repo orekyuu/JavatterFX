@@ -6,24 +6,18 @@ import java.util.TreeMap;
 
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
 import twitter4j.Status;
 
 import com.github.orekyuu.javatterfx.controller.TweetObjectController;
 
 public class TweetListCell extends ListCell<Status>{
 
-	private ListView<Status> parent;
-
 	private static Map<Long,Parent> map=new TreeMap<>();
-
-	public TweetListCell(ListView<Status> view){
-		parent=view;
-	}
 
 	@Override
 	public void updateItem(Status status,boolean flag){
 		super.updateItem(status,flag);
+
 		if(flag){
 			setText(null);
 			setGraphic(null);
@@ -69,8 +63,7 @@ public class TweetListCell extends ListCell<Status>{
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-
-		c.getLabel().maxWidthProperty().bind(parent.widthProperty());
+		c.getRootPane().maxWidthProperty().bind(maxWidthProperty());
 		c.getRootPane().maxHeightProperty().bind(maxHeightProperty());
 		setGraphic(p);
 		map.put(status.getId(), p);
