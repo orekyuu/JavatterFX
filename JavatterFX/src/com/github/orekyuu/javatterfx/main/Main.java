@@ -20,6 +20,7 @@ import com.github.orekyuu.javatterfx.column.ColumnManager;
 import com.github.orekyuu.javatterfx.column.MensionsColumnFactory;
 import com.github.orekyuu.javatterfx.column.TimeLineColumnFactory;
 import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
+import com.github.orekyuu.javatterfx.controller.LoginController;
 import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadEnd;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadStart;
@@ -63,7 +64,9 @@ public class Main extends Application{
 			TwitterManager.getInstance().getTwitter().setOAuthAccessToken(token);
 			TwitterManager.getInstance().authentication(token);
 		}else{
-			Parent parent=JavatterFxmlLoader.load("Login.fxml");
+			JavatterFxmlLoader<LoginController> loader=new JavatterFxmlLoader<>();
+			Parent parent=loader.loadFxml("Login.fxml");
+			loader.getController().browse(this);
 			Scene scene=new Scene(parent);
 			scene.getStylesheets().addAll(JavatterCss.getCssPath());
 			Stage stage1=new Stage();
@@ -127,7 +130,7 @@ public class Main extends Application{
 			System.setProperty("javafx.macosx.embedded", "true");
 		    java.awt.Toolkit.getDefaultToolkit();
 		}
-		
+
 		launch(args);
 	}
 

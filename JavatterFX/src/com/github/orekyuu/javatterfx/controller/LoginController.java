@@ -1,12 +1,9 @@
 package com.github.orekyuu.javatterfx.controller;
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,16 +37,13 @@ public class LoginController implements Initializable{
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		twitter=TwitterManager.getInstance().getTwitter();
+	}
+
+	public void browse(Application app){
 		try {
 			token=twitter.getOAuthRequestToken();
-			Desktop.getDesktop().browse(new URL(token.getAuthenticationURL()).toURI());
+			app.getHostServices().showDocument(token.getAuthenticationURL());
 		} catch (TwitterException e) {
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}
