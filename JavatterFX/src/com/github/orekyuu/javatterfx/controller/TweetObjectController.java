@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -27,6 +29,7 @@ import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventViaClick;
+import com.github.orekyuu.javatterfx.event.view.EventInitializeTweetobject;
 import com.github.orekyuu.javatterfx.util.ImageTask;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 
@@ -48,12 +51,16 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	private Hyperlink via;
 	@FXML
 	private HBox previewBox;
+	@FXML
+	private MenuButton menu;
 
 	private Status status;
 
 	private String viaURL;
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		EventInitializeTweetobject event=new EventInitializeTweetobject(this);
+		EventManager.INSTANCE.eventFire(event);
 	}
 
 	public void setAccountName(String s){
@@ -84,6 +91,14 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 			viaURL=matcher.group();
 		}
 		via.setText("via "+s.replaceFirst("<a.*\">", "").replace("</a>", ""));
+	}
+
+	/**
+	 * メニューボタンにアイテムを追加
+	 * @param button
+	 */
+	public void addMenuItem(MenuItem button){
+		menu.getItems().add(button);
 	}
 
 	/**
