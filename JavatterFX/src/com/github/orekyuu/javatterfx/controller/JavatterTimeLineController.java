@@ -1,11 +1,16 @@
 package com.github.orekyuu.javatterfx.controller;
 
 import java.net.URL;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -29,15 +34,18 @@ public class JavatterTimeLineController extends AbstractColumnController{
 	@FXML
 	private ListView<Status> box;
 
+	private Map<Long,Parent> map;
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
+		map=new TreeMap<>();
+		box.setItems(FXCollections.observableArrayList(new HashSet<Status>()));
 		box.setCellFactory(new Callback<ListView<Status>, ListCell<Status>>() {
 
 			@Override
 			public ListCell<Status> call(ListView<Status> param) {
-				TweetListCell cell= new TweetListCell();
-				cell.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+				TweetListCell cell= new TweetListCell(map);
 				return cell;
 			}
 		});

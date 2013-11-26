@@ -2,7 +2,6 @@ package com.github.orekyuu.javatterfx.view;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
@@ -12,7 +11,11 @@ import com.github.orekyuu.javatterfx.controller.TweetObjectController;
 
 public class TweetListCell extends ListCell<Status>{
 
-	private static Map<Long,Parent> map=new TreeMap<>();
+	private Map<Long,Parent> map;
+
+	public TweetListCell(Map<Long,Parent> map){
+		this.map=map;
+	}
 
 	@Override
 	public void updateItem(Status status,boolean flag){
@@ -24,14 +27,9 @@ public class TweetListCell extends ListCell<Status>{
 			return;
 		}
 
-		if(getGraphic()!=null)return;
-
-		setText(null);
-		setGraphic(null);
 
 		if(map.containsKey(status.getId())){
 			setGraphic(map.get(status.getId()));
-			layout();
 			return;
 		}
 
