@@ -10,10 +10,12 @@ import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -53,6 +55,10 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	private HBox previewBox;
 	@FXML
 	private MenuButton menu;
+	@FXML
+	private Button rtButton;
+	@FXML
+	private ToggleButton favButton;
 
 	private Status status;
 
@@ -155,8 +161,12 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 * @param event
 	 */
 	public void onFavorite(ActionEvent event){
-		EventManager.INSTANCE.eventFire(new EventFavoriteClick(status));
-		TwitterUtil.fav(TwitterManager.getInstance().getTwitter(), status);
+		if(favButton.isSelected()){
+			EventManager.INSTANCE.eventFire(new EventFavoriteClick(status));
+			TwitterUtil.fav(TwitterManager.getInstance().getTwitter(), status);
+			return;
+		}
+		TwitterUtil.unfav(TwitterManager.getInstance().getTwitter(), status);
 	}
 
 	/**
@@ -165,6 +175,7 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 */
 	public void onRetweet(ActionEvent event){
 		try {
+			((Button) event.getSource()).setDisable(true);
 			EventManager.INSTANCE.eventFire(new EventRTClick(status));
 			TwitterUtil.rt(TwitterManager.getInstance().getTwitter(), status);
 		} catch (TwitterException e) {
@@ -174,6 +185,14 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 
 	public void setStatus(Status status) throws MalformedURLException {
 		this.status=status;
+		Status s=status;
+		if(status.isRetweet()){
+			s=status.getRetweetedStatus();
+		}
+		rtButton.setDisable(s.isRetweetedByMe());
+
+		favButton.setSelected(s.isFavorited());
+
 		for(MediaEntity entity:status.getMediaEntities()){
 			ImageView view=new ImageView();
 			view.setFitHeight(100);

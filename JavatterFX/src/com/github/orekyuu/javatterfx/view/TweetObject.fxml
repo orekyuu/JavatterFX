@@ -25,8 +25,8 @@
             <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
               <children>
                 <Button cache="false" cancelButton="false" defaultButton="false" mnemonicParsing="false" onAction="#onReply" text="リプライ" />
-                <Button cache="false" mnemonicParsing="false" onAction="#onRetweet" text="RT" />
-                <Button cache="false" mnemonicParsing="false" onAction="#onFavorite" text="☆" />
+                <Button fx:id="rtButton" cache="false" cancelButton="false" defaultButton="false" disable="false" mnemonicParsing="false" onAction="#onRetweet" text="RT" />
+                <ToggleButton fx:id="favButton" mnemonicParsing="false" onAction="#onFavorite" text="☆" />
                 <MenuButton fx:id="menu" cache="false" mnemonicParsing="false" text="..." />
               </children>
             </HBox>
