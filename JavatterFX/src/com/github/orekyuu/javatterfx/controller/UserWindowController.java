@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
 
+import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -134,10 +135,15 @@ public class UserWindowController implements Initializable{
 		pane.getChildren().add(map.get(userinfo));
 	}
 
-	private final int MOVETIME=600;;
+	private final int MOVETIME=600;
 	private final TranslateTransition intrans=new TranslateTransition(Duration.millis(MOVETIME));
 	private final TranslateTransition outtrans=new TranslateTransition(Duration.millis(MOVETIME));
 	private void animation(Node n,Node o){
+		if(intrans.getStatus()==Animation.Status.RUNNING&&
+				outtrans.getStatus()==Animation.Status.RUNNING){
+			pane.getChildren().clear();
+		}
+
 		if(n.equals(o)){
 			for(Entry<ToggleButton, Node> set:map.entrySet()){
 				if(set.getValue().equals(n)){
