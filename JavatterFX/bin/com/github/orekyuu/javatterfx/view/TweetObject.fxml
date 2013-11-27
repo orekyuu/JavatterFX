@@ -21,8 +21,11 @@
               <font>
                 <Font name="Meiryo Italic" size="12.0" />
               </font>
+              <VBox.margin>
+                <Insets right="20.0" fx:id="x1" />
+              </VBox.margin>
             </Hyperlink>
-            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
+            <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" padding="$x1" prefHeight="-1.0" prefWidth="-1.0">
               <children>
                 <Button cache="false" cancelButton="false" defaultButton="false" mnemonicParsing="false" onAction="#onReply" text="リプライ" />
                 <Button fx:id="rtButton" cache="false" cancelButton="false" defaultButton="false" disable="false" mnemonicParsing="false" onAction="#onRetweet" text="RT" />
@@ -35,14 +38,10 @@
         </VBox>
       </bottom>
       <center>
-        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" wrapText="true">
-          <BorderPane.margin>
-            <Insets right="5.0" />
-          </BorderPane.margin>
-        </Label>
+        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" wrapText="true" BorderPane.margin="$x1" />
       </center>
       <top>
-        <HBox fx:id="box2" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0">
+        <HBox fx:id="box2" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" padding="$x1" prefHeight="-1.0" prefWidth="-1.0">
           <children>
             <Label fx:id="accountname" alignment="TOP_LEFT" cache="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="-1.0" text="\@hoge" textAlignment="LEFT" textFill="BLACK" underline="false" wrapText="true">
               <font>

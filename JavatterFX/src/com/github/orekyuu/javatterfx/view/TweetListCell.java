@@ -3,6 +3,8 @@ package com.github.orekyuu.javatterfx.view;
 import java.io.IOException;
 import java.util.Map;
 
+import javafx.scene.Group;
+import javafx.scene.GroupBuilder;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
 import twitter4j.Status;
@@ -34,6 +36,7 @@ public class TweetListCell extends ListCell<Status>{
 		}
 
 		JavatterFxmlLoader<TweetObjectController> loader=new JavatterFxmlLoader<>();
+		@SuppressWarnings("unused")
 		Parent p=null;
 		try {
 			p = loader.loadFxml("TweetObject.fxml");
@@ -61,9 +64,10 @@ public class TweetListCell extends ListCell<Status>{
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		c.getRootPane().maxWidthProperty().bind(maxWidthProperty());
-		c.getRootPane().maxHeightProperty().bind(maxHeightProperty());
-		setGraphic(p);
-		map.put(status.getId(), p);
+		c.getRootPane().maxWidthProperty().bind(getListView().widthProperty());
+		c.getRootPane().prefWidthProperty().bind(getListView().widthProperty());
+		Group group = GroupBuilder.create().children(c.getRootPane()).build();
+		setGraphic(group);
+		map.put(status.getId(), group);
 	}
 }
