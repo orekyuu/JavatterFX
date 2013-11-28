@@ -56,7 +56,7 @@ public class IconCache {
 		}
 		throw new IOException("不明な読み込みエラー");
 	}
-	
+
 	/**
 	 * cacheMapからアイコンを取得する
 	 * @param url
@@ -65,7 +65,7 @@ public class IconCache {
 	private Image getIconFromCacheMap(URL url) {
 		return cacheMap.get(url);
 	}
-	
+
 	/**
 	 * LocalCacheからアイコンを取得する
 	 * @param url
@@ -85,7 +85,7 @@ public class IconCache {
 		if(!JavatterConfig.getInstance().getUseLocalCache() && !force) {
 			return null;
 		}
-		
+
 		File cacheFile = getCacheFile(url);
 		if(!cacheFile.exists() ) {
 			return null;
@@ -98,13 +98,13 @@ public class IconCache {
 			}
 		}
 	}
-	
+
 	private Image getIconFromHttp(URL url) {
 		try {
 			if(JavatterConfig.getInstance().getUseLocalCache() && saveCacheFile(url)){
 				return getIconFromLocalCache(url);
 			}
-		
+
 			Image image = new Image(url.openStream());
 			return image;
 		} catch (IOException e) {
@@ -113,8 +113,9 @@ public class IconCache {
 			return null;
 		}
 	}
-	
+
 	private boolean saveCacheFile(URL url) throws IOException {
+		createCacheFolder();
 		InputStream stream = url.openStream();
 		try {
 			Files.copy(stream, Paths.get(getCacheFile(url).getPath()));
@@ -122,6 +123,11 @@ public class IconCache {
 		}catch(IOException ex) {
 			return false;
 		}
+	}
+
+	private void createCacheFolder(){
+		if(!cacheDir.exists())
+			cacheDir.mkdir();
 	}
 
 	private File getCacheFile(URL url) {
