@@ -11,11 +11,11 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.web.*?>
 
-<BorderPane id="BorderPane" fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="0.0" prefHeight="-1.0" prefWidth="300.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.TweetObjectController">
+<BorderPane id="BorderPane" fx:id="root" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="com.github.orekyuu.javatterfx.controller.TweetObjectController">
   <center>
     <BorderPane fx:id="border" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0" BorderPane.alignment="TOP_LEFT">
       <bottom>
-        <VBox fx:id="box1" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
+        <VBox fx:id="box1" maxWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0">
           <children>
             <Hyperlink fx:id="via" cache="false" maxWidth="-1.0" onAction="#OnClickVia" text="via hoge" textFill="GREY">
               <font>
@@ -38,26 +38,17 @@
         </VBox>
       </bottom>
       <center>
-        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" wrapText="true" BorderPane.margin="$x1" />
+        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" text="Label" wrapText="true" BorderPane.alignment="TOP_LEFT" BorderPane.margin="$x1" />
       </center>
       <top>
-        <HBox fx:id="box2" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" padding="$x1" prefHeight="-1.0" prefWidth="-1.0">
-          <children>
-            <Label fx:id="accountname" alignment="TOP_LEFT" cache="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="-1.0" text="\@hoge" textAlignment="LEFT" textFill="BLACK" underline="false" wrapText="true">
-              <font>
-                <Font name="Meiryo UI Bold Italic" size="12.0" />
-              </font>
-            </Label>
-            <Label fx:id="username" alignment="CENTER_LEFT" cache="false" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="hoge" textAlignment="LEFT" textFill="BLACK" underline="false" wrapText="true">
-              <font>
-                <Font name="Meiryo Bold" size="12.0" />
-              </font>
-              <HBox.margin>
-                <Insets left="10.0" />
-              </HBox.margin>
-            </Label>
-          </children>
-        </HBox>
+        <Label fx:id="accountname" alignment="TOP_LEFT" maxWidth="-1.0" text="\@hoge" BorderPane.alignment="CENTER_LEFT">
+          <font>
+            <Font name="System Bold" size="15.0" fx:id="x2" />
+          </font>
+          <graphic>
+            <Label fx:id="username" font="$x2" text="hoge" />
+          </graphic>
+        </Label>
       </top>
     </BorderPane>
   </center>

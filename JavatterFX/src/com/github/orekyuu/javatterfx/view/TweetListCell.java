@@ -3,6 +3,9 @@ package com.github.orekyuu.javatterfx.view;
 import java.io.IOException;
 import java.util.Map;
 
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.GroupBuilder;
 import javafx.scene.Parent;
@@ -64,10 +67,57 @@ public class TweetListCell extends ListCell<Status>{
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
-		c.getRootPane().maxWidthProperty().bind(getListView().widthProperty());
-		c.getRootPane().prefWidthProperty().bind(getListView().widthProperty());
+
+		CellSizeProperty prop=new CellSizeProperty(getListView().widthProperty());
+		c.getRootPane().maxWidthProperty().bind(prop);
+		c.getRootPane().prefWidthProperty().bind(prop);
 		Group group = GroupBuilder.create().children(c.getRootPane()).build();
 		setGraphic(group);
 		map.put(status.getId(), group);
+	}
+
+	class CellSizeProperty extends ReadOnlyDoubleProperty{
+
+		private ReadOnlyDoubleProperty prop;
+		public CellSizeProperty(ReadOnlyDoubleProperty prop) {
+			this.prop=prop;
+		}
+
+		@Override
+		public Object getBean() {
+			return prop;
+		}
+
+		@Override
+		public String getName() {
+			return prop.getName();
+		}
+
+		@Override
+		public double get() {
+			double space=30;
+			return prop.get()-space;
+		}
+
+		@Override
+		public void addListener(ChangeListener<? super Number> changelistener) {
+			prop.addListener(changelistener);
+		}
+
+		@Override
+		public void removeListener(ChangeListener<? super Number> changelistener) {
+			prop.removeListener(changelistener);
+		}
+
+		@Override
+		public void addListener(InvalidationListener invalidationlistener) {
+			prop.addListener(invalidationlistener);
+		}
+
+		@Override
+		public void removeListener(InvalidationListener invalidationlistener) {
+			prop.removeListener(invalidationlistener);
+		}
+
 	}
 }
