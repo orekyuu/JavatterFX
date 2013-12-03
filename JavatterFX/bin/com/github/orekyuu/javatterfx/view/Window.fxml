@@ -19,7 +19,7 @@
   <top>
     <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="-1.0" prefWidth="-1.0">
       <children>
-        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onDragDropped="#onImageDrop" onKeyPressed="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
+        <TextArea fx:id="tweet" disable="false" focusTraversable="true" maxWidth="1.7976931348623157E308" onDragDropped="#onImageDrop" onDragOver="#onImageDragOver" onKeyPressed="#onChangeText" opacity="1.0" prefHeight="96.0" prefWidth="10000.0" wrapText="true">
           <effect>
             <InnerShadow color="#bfbfbf" />
           </effect>

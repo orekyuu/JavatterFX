@@ -197,7 +197,6 @@ public class WindowController implements Initializable, Listener{
 		if(db.hasFiles()){
 			for(File f:db.getFiles()){
 				if(!p.matcher(f.getPath()).find())continue;
-				System.out.println(f.getName());
 				file=f;
 				break;
 			}
