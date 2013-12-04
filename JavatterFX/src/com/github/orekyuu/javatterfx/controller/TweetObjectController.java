@@ -3,6 +3,8 @@ package com.github.orekyuu.javatterfx.controller;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -59,6 +61,8 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	private Button rtButton;
 	@FXML
 	private ToggleButton favButton;
+	@FXML
+	private Label timeLabel;
 
 	private Status status;
 
@@ -201,6 +205,9 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 			task.start();
 			previewBox.getChildren().add(view);
 		}
+		Date d=s.getCreatedAt();
+		String date=new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(d);
+		timeLabel.setText(date);
 	}
 
 	public void imageClick(MouseEvent event){
