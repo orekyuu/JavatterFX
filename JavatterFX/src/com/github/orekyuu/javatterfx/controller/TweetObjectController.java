@@ -10,18 +10,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.TwitterException;
@@ -198,12 +206,35 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 		favButton.setSelected(s.isFavorited());
 
 		for(MediaEntity entity:status.getMediaEntities()){
-			ImageView view=new ImageView();
+			final ImageView view=new ImageView();
 			view.setFitHeight(100);
 			view.setFitWidth(100);
 			ImageTask task=new ImageTask(view, entity.getMediaURL());
 			task.start();
 			previewBox.getChildren().add(view);
+			view.setOnMouseClicked(new EventHandler<Event>() {
+
+				@Override
+				public void handle(Event event) {
+					Image image=view.getImage();
+					final Stage stage=new Stage(StageStyle.TRANSPARENT);
+					Group rootGroup=new Group();
+					Scene scene = new Scene(rootGroup, image.getWidth(), image.getHeight(), Color.TRANSPARENT);
+					stage.setScene(scene);
+					stage.centerOnScreen();
+					stage.show();
+
+					ImageView img=new ImageView(image);
+					rootGroup.getChildren().add(img);
+					rootGroup.setOnMouseClicked(new EventHandler<Event>() {
+
+						@Override
+						public void handle(Event event) {
+							stage.close();
+						}
+					});
+				}
+			});
 		}
 		Date d=s.getCreatedAt();
 		String date=new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(d);
