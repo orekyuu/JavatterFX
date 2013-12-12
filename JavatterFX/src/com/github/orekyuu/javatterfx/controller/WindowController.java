@@ -169,8 +169,7 @@ public class WindowController implements Initializable, Listener{
 	private void tweet(EventType type){
 		EventUserTweet event=new EventUserTweet(tweet.getText(),TwitterManager.getInstance().getUser(),type);
 		EventManager.INSTANCE.eventFire(event);
-		StatusUpdateBuilder builder=new StatusUpdateBuilder(event.getText());
-		builder.setReplyID(reply);
+		StatusUpdateBuilder builder=new StatusUpdateBuilder(event.getText()).setReplyID(reply);
 		if(file!=null)builder.setImage(file);
 		TweetDispenser.tweet(builder.create());
 		tweet.setText("");

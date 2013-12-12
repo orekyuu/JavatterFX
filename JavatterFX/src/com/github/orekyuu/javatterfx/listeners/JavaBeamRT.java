@@ -41,8 +41,8 @@ public class JavaBeamRT implements Listener {
 			public void handle(ActionEvent e) {
 				Status status=event.getController().getStatus();
 				String user=status.getUser().getScreenName();
-				StatusUpdateBuilder builder=new StatusUpdateBuilder("@"+user+" Javaビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwwwww");
-				builder.setReplyID(status);
+				StatusUpdateBuilder builder=new StatusUpdateBuilder("@"+user+" Javaビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwwwww")
+				.setReplyID(status);
 				TweetDispenser.tweet(builder.create());
 			}
 		});

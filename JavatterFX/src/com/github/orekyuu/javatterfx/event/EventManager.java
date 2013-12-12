@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * イベント管理用シングルトン
+ * @author kyuuban
+ *
+ */
 public enum EventManager {
 	INSTANCE;
 
