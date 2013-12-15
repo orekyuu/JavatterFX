@@ -17,12 +17,12 @@
       <bottom>
         <VBox fx:id="box1" maxWidth="-Infinity" prefHeight="-1.0" prefWidth="-1.0">
           <children>
-            <Label fx:id="timeLabel" text="yyyy/mm/dd/HH/MM/SS" textFill="#808080">
+            <Label fx:id="timeLabel" text="yyyy/mm/dd/HH/MM/SS" textFill="GREY" wrapText="false">
               <font>
                 <Font name="System Italic" size="12.0" />
               </font>
               <graphic>
-                <Hyperlink fx:id="via" cache="false" maxWidth="-1.0" onAction="#OnClickVia" text="via hoge" textFill="GREY">
+                <Hyperlink fx:id="via" cache="false" maxWidth="-1.0" onAction="#OnClickVia" text="via hoge" textFill="GREY" wrapText="true">
                   <font>
                     <Font name="Meiryo Italic" size="12.0" />
                   </font>
@@ -45,12 +45,16 @@
         </VBox>
       </bottom>
       <center>
-        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" text="Label" wrapText="true" BorderPane.alignment="TOP_LEFT" BorderPane.margin="$x1" />
+        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" text="Label" wrapText="true" BorderPane.alignment="TOP_LEFT" BorderPane.margin="$x1">
+          <font>
+            <Font size="12.0" />
+          </font>
+        </Label>
       </center>
       <top>
         <Label fx:id="accountname" alignment="TOP_LEFT" maxWidth="-1.0" text="\@hoge" BorderPane.alignment="CENTER_LEFT">
           <font>
-            <Font name="System Bold" size="15.0" fx:id="x2" />
+            <Font name="System Bold" size="12.0" fx:id="x2" />
           </font>
           <graphic>
             <Label fx:id="username" font="$x2" text="hoge" />
@@ -62,10 +66,10 @@
   <left>
     <StackPane prefHeight="-1.0" prefWidth="-1.0">
       <children>
-        <ImageView fx:id="image" cache="false" fitHeight="48.0" fitWidth="48.0" onMouseClicked="#imageClick" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT" />
+        <ImageView fx:id="image" cache="false" fitHeight="32.0" fitWidth="32.0" onMouseClicked="#imageClick" pickOnBounds="true" preserveRatio="true" StackPane.alignment="TOP_LEFT" />
         <ImageView fx:id="minimage" fitHeight="24.0" fitWidth="24.0" onMouseClicked="#imageClick" pickOnBounds="true" preserveRatio="true" y="0.0" StackPane.alignment="TOP_LEFT">
           <StackPane.margin>
-            <Insets top="52.0" />
+            <Insets top="32.0" />
           </StackPane.margin>
         </ImageView>
       </children>
