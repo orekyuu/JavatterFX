@@ -26,6 +26,8 @@ public class PluginLoader{
 				loadPlugin(f,loader);
 			}
 		}
+		
+		loadDevelopPlugin();
 		pluginPostInit();
 	}
 
@@ -60,6 +62,18 @@ public class PluginLoader{
 			addPlugin(clazz);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	private void loadDevelopPlugin() {
+		String path = System.getProperty("loadPlugin");
+		if (path != null) {
+			try {
+				System.out.println(path);
+				addPlugin(Class.forName(path));
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
