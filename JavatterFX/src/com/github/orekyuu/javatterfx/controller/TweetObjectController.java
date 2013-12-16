@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -33,6 +34,7 @@ import javafx.stage.StageStyle;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.TwitterException;
+import twitter4j.URLEntity;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventManager;
@@ -40,6 +42,7 @@ import com.github.orekyuu.javatterfx.event.user.EventFavoriteClick;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
+import com.github.orekyuu.javatterfx.event.user.EventTweetHyperlinkClick;
 import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.event.view.EventInitializeTweetobject;
 import com.github.orekyuu.javatterfx.util.ImageTask;
@@ -58,7 +61,7 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	@FXML
 	private Label username;
 	@FXML
-	private Label text;
+	private FlowPane tweetPane;
 	@FXML
 	private Hyperlink via;
 	@FXML
@@ -93,14 +96,6 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 		username.setText(s);
 	}
 
-	public void setTweet(String s){
-		text.setText(s);
-	}
-
-	public Label getLabel(){
-		return text;
-	}
-
 	public void setVia(String s){
 		String regex="https?://[\\w/:%#\\$&\\?\\(\\)~\\.=\\+\\-]+";
 		Pattern p=Pattern.compile(regex);
@@ -117,6 +112,10 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 */
 	public void addMenuItem(MenuItem button){
 		menu.getItems().add(button);
+	}
+
+	public FlowPane getTextPane(){
+		return tweetPane;
 	}
 
 	/**
@@ -202,9 +201,57 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 			s=status.getRetweetedStatus();
 		}
 		rtButton.setDisable(s.isRetweetedByMe());
-
 		favButton.setSelected(s.isFavorited());
+		setTweetImage();
+		setTweetText(s);
 
+		Date d=s.getCreatedAt();
+		String date=new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(d);
+		timeLabel.setText(date);
+	}
+
+	/**
+	 * ツイートの本文を設定
+	 * @param status
+	 */
+	private void setTweetText(Status status){
+		String text=status.getText();
+		for(URLEntity entity:status.getURLEntities()){
+			text=text.replace(entity.getURL(), "\0"+entity.getExpandedURL()+"\0");
+		}
+
+		final Status tweet=this.status;
+		for(String s:text.split("\0")){
+			final URLEntity entity=getURLEntity(s, status);
+			if(entity!=null){
+				Hyperlink link=new Hyperlink();
+				link.setText(s);
+				link.setOnAction(new EventHandler<ActionEvent>() {
+
+					@Override
+					public void handle(ActionEvent event) {
+						EventManager.INSTANCE.eventFire(new EventTweetHyperlinkClick(entity.getExpandedURL(), tweet));
+					}
+
+				});
+				tweetPane.getChildren().add(link);
+			}else{
+				tweetPane.getChildren().add(new Label(s));
+			}
+		}
+	}
+
+	private URLEntity getURLEntity(String text,Status status){
+		for(URLEntity entity:status.getURLEntities()){
+			if(entity.getExpandedURL().equals(text))return entity;
+		}
+		return null;
+	}
+
+	/**
+	 * ツイートに添付された画像を表示
+	 */
+	private void setTweetImage(){
 		for(MediaEntity entity:status.getMediaEntities()){
 			final ImageView view=new ImageView();
 			view.setFitHeight(100);
@@ -236,9 +283,6 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 				}
 			});
 		}
-		Date d=s.getCreatedAt();
-		String date=new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(d);
-		timeLabel.setText(date);
 	}
 
 	public void imageClick(MouseEvent event){

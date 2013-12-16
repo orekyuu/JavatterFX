@@ -1,8 +1,6 @@
 package com.github.orekyuu.javatterfx.listeners;
 
-import java.awt.Desktop;
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -12,7 +10,9 @@ import com.github.orekyuu.javatterfx.controller.UserWindowController;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.Listener;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
+import com.github.orekyuu.javatterfx.event.user.EventTweetHyperlinkClick;
 import com.github.orekyuu.javatterfx.event.user.EventViaClick;
+import com.github.orekyuu.javatterfx.main.Main;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 public class TweetObjectListener implements Listener{
@@ -39,10 +39,11 @@ public class TweetObjectListener implements Listener{
 
 	@EventHandler
 	public void openBrowser(EventViaClick via){
-		try {
-			Desktop.getDesktop().browse(via.getURL().toURI());
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-		}
+		Main.getApplication().getHostServices().showDocument(via.getURL().toString());
+	}
+
+	@EventHandler
+	public void onTweetLinkClick(EventTweetHyperlinkClick event){
+		Main.getApplication().getHostServices().showDocument(event.getLinkURL());
 	}
 }

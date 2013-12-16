@@ -52,14 +52,12 @@ public class UserTimelineController implements Initializable{
 				c.setAccountName("@"+status.getUser().getScreenName());
 				c.setUserName(status.getUser().getName());
 				c.setVia(status.getSource());
-				c.setTweet(status.getText());
 				c.setStatus(status);
 				c.setImage(status.getUser().getProfileImageURL());
 			}else{
 				c.setAccountName("@"+status.getRetweetedStatus().getUser().getScreenName());
 				c.setUserName(status.getRetweetedStatus().getUser().getName());
 				c.setVia(status.getRetweetedStatus().getSource());
-				c.setTweet(status.getRetweetedStatus().getText());
 				c.setStatus(status);
 				c.setImage(status.getRetweetedStatus().getUser().getProfileImageURL());
 				c.setMinImage(status.getUser().getProfileImageURL());

@@ -39,11 +39,14 @@ public class Main extends Application{
 
 	private static JavatterUserStream userstream;
 
+	private static Application app;
+
 	public static final boolean DEBUG=false;
 
 	@Override
 	public void start(Stage stage) throws Exception {
 		Main.stage=stage;
+		Main.app=this;
 		SaveDataManager.getInstance().init();
 		JavatterConfig.getInstance().init();
 		userstream=new JavatterUserStream();
@@ -136,6 +139,10 @@ public class Main extends Application{
 
 	public static Stage getStage(){
 		return stage;
+	}
+
+	public static Application getApplication(){
+		return app;
 	}
 
 	public static JavatterUserStream getUserStream(){

@@ -45,11 +45,7 @@
         </VBox>
       </bottom>
       <center>
-        <Label fx:id="text" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" text="Label" wrapText="true" BorderPane.alignment="TOP_LEFT" BorderPane.margin="$x1">
-          <font>
-            <Font size="12.0" />
-          </font>
-        </Label>
+        <FlowPane fx:id="tweetPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0" prefWrapLength="200.0" />
       </center>
       <top>
         <Label fx:id="accountname" alignment="TOP_LEFT" maxWidth="-1.0" text="\@hoge" BorderPane.alignment="CENTER_LEFT">
