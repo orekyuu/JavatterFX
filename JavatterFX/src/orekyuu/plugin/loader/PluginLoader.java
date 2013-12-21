@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -14,6 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+
+import com.github.orekyuu.javatterfx.event.system.EventCreatePluginConfig;
+import com.github.orekyuu.javatterfx.managers.EventManager;
+
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 
 /**
  * プラグインを読み込むクラス
@@ -91,7 +98,6 @@ public class PluginLoader{
 		String path = System.getProperty("loadPlugin");
 		if (path != null) {
 			try {
-				System.out.println(path);
 				addPlugin(Class.forName(path));
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
@@ -157,6 +163,9 @@ public class PluginLoader{
 				}
 			}
 			PluginRegister.INSTANCE.registerPlugin(p.name(),p.version(), obj);//Pluginを登録する
+			//PluginItemにMenuItemを設定
+			setMenuItem(clazz, obj, p);
+
 			//Initを実行
 			for(Method m:clazz.getMethods()){
 				if(equippedAnnotations(m.getAnnotations(),
@@ -172,6 +181,43 @@ public class PluginLoader{
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void setMenuItem(Class clazz,Object obj,Plugin p) throws IllegalArgumentException, IllegalAccessException{
+		int size=0;
+		for(Field f:clazz.getDeclaredFields()){
+			if(equippedAnnotations(f.getAnnotations(),
+					orekyuu.plugin.loader.Plugin.ConfigItem.class)==null)
+				continue;
+			if(!f.isAccessible())
+				f.setAccessible(true);
+			Class c=(Class) f.getGenericType();
+			String name=c.getName();
+			if(name.equals("javafx.scene.control.MenuItem")){
+				MenuItem item=new MenuItem();
+				item.setText(p.name());
+				f.set(obj, item);
+				EventCreatePluginConfig event=new EventCreatePluginConfig(item);
+				EventManager.INSTANCE.eventFire(event);
+				size++;
+			}
+			if(name.equals("javafx.scene.control.Menu")){
+				MenuItem item=new Menu();
+				item.setText(p.name());
+				f.set(obj, item);
+				EventCreatePluginConfig event=new EventCreatePluginConfig(item);
+				EventManager.INSTANCE.eventFire(event);
+				size++;
+			}
+		}
+
+		if(size==0){
+			MenuItem item=new MenuItem();
+			item.setText(p.name());
+			EventCreatePluginConfig event=new EventCreatePluginConfig(item);
+			EventManager.INSTANCE.eventFire(event);
 		}
 	}
 

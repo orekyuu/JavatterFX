@@ -29,7 +29,7 @@ import twitter4j.Status;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.Listener;
-import com.github.orekyuu.javatterfx.event.system.EventPluginLoad;
+import com.github.orekyuu.javatterfx.event.system.EventCreatePluginConfig;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
@@ -106,13 +106,12 @@ public class WindowController implements Initializable, Listener{
 	}
 
 	@EventHandler
-	public void onPluginLoad(final EventPluginLoad event){
+	public void onPluginLoad(final EventCreatePluginConfig event) {
 		Platform.runLater(new Runnable() {
 
 			@Override
 			public void run() {
-				MenuItem item=new MenuItem(event.getName());
-				plugin.getItems().add(item);
+				plugin.getItems().add(event.getItem());
 			}
 		});
 	}

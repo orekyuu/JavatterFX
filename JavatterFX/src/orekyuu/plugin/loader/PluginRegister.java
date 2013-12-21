@@ -23,7 +23,7 @@ public enum PluginRegister {
 	 */
 	void registerPlugin(String name,String version, Object obj){
 		System.out.println("plugin adding: "+name+" "+version);
-		EventManager.INSTANCE.eventFire(new EventPluginLoad(name, version));
+		EventManager.INSTANCE.eventFire(new EventPluginLoad(name, version, obj));
 		plugins.put(name, obj);
 	}
 
