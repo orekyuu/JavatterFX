@@ -26,13 +26,6 @@ public @interface Plugin {
 	String version();
 
 	/**
-	 * プラグインが動く一番古いJavatterのバージョン<br>
-	 * 例えば本体のバージョン2以上が必要な場合はこの値に2を入れてください<br>
-	 * @return
-	 */
-	int useMinorVersion() default 1;
-
-	/**
 	 * プラグインの初期化
 	 * @author kyuuban
 	 *

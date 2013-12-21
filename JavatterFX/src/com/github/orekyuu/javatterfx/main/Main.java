@@ -43,6 +43,8 @@ public class Main extends Application{
 
 	public static final boolean DEBUG=false;
 
+	public static final int VERSION = 1;
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		Main.stage=stage;
