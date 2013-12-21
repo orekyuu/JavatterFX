@@ -2,6 +2,9 @@ package com.github.orekyuu.javatterfx.util;
 
 import java.io.File;
 
+import com.github.orekyuu.javatterfx.managers.SaveData;
+import com.github.orekyuu.javatterfx.managers.SaveDataManager;
+
 /**
  * Javatterのコンフィグクラス
  * @author orekyuu

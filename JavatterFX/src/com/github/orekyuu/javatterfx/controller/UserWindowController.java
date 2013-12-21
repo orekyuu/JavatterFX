@@ -27,8 +27,8 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import twitter4j.User;
 
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.view.EventUserToolbarCreated;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 import com.github.orekyuu.javatterfx.util.ImageTask;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 

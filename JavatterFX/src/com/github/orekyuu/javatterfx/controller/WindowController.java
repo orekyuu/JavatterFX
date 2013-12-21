@@ -27,14 +27,14 @@ import javafx.scene.layout.VBox;
 import twitter4j.Status;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
-import com.github.orekyuu.javatterfx.column.ColumnManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.Listener;
 import com.github.orekyuu.javatterfx.event.system.EventPluginLoad;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
+import com.github.orekyuu.javatterfx.managers.ColumnManager;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
 import com.github.orekyuu.javatterfx.util.StatusUpdateBuilder;
 import com.github.orekyuu.javatterfx.util.TweetDispenser;

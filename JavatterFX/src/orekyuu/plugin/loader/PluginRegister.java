@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.system.EventPluginLoad;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 
 public enum PluginRegister {
 
@@ -37,5 +37,19 @@ public enum PluginRegister {
 			list.add(entry.getValue());
 		}
 		return list.toArray(new Object[]{});
+	}
+
+	/**
+	 * ロード済みのプラグインの名前を返します
+	 * @return
+	 */
+	public String[] getLoadedPluginNames(){
+		String[] array=new String[plugins.size()];
+		@SuppressWarnings("unchecked")
+		Entry<String,Object>[] entrys=plugins.entrySet().toArray(new Entry[0]);
+		for(int i=0;i<array.length;i++){
+			array[i]=entrys[i].getKey();
+		}
+		return array;
 	}
 }

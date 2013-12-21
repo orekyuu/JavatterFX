@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 
 import com.github.orekyuu.javatterfx.controller.JavatterTimeLineController;
 import com.github.orekyuu.javatterfx.event.Listener;
+import com.github.orekyuu.javatterfx.managers.ColumFactory;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 public class TimeLineColumnFactory implements ColumFactory,Listener{

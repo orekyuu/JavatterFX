@@ -32,7 +32,7 @@ public class JavatterTimeLineController extends AbstractColumnController{
 	private Label name;
 
 	@FXML
-	private ListView<Status> box;
+	private ListView<Status> listView;
 
 	private Map<Long,Parent> map;
 
@@ -40,8 +40,8 @@ public class JavatterTimeLineController extends AbstractColumnController{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
 		map=new TreeMap<>();
-		box.setItems(FXCollections.observableArrayList(new HashSet<Status>()));
-		box.setCellFactory(new Callback<ListView<Status>, ListCell<Status>>() {
+		listView.setItems(FXCollections.observableArrayList(new HashSet<Status>()));
+		listView.setCellFactory(new Callback<ListView<Status>, ListCell<Status>>() {
 
 			@Override
 			public ListCell<Status> call(ListView<Status> param) {
@@ -56,15 +56,15 @@ public class JavatterTimeLineController extends AbstractColumnController{
 	}
 
 	public void addObject(Status p) {
-		box.getItems().add(0, p);
+		listView.getItems().add(0, p);
 	}
 	public void addLast(Status p) {
-		box.getItems().add(p);
+		listView.getItems().add(p);
 	}
 
 	public void onScrollTop(ActionEvent event){
-		box.getSelectionModel().clearAndSelect(0);
-		box.scrollTo(0);
+		listView.getSelectionModel().clearAndSelect(0);
+		listView.scrollTo(0);
 	}
 
 	public void onClose(ActionEvent event){

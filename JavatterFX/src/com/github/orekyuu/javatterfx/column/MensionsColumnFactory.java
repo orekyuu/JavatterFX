@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.scene.Parent;
 
 import com.github.orekyuu.javatterfx.controller.MensionsController;
+import com.github.orekyuu.javatterfx.managers.ColumFactory;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
 
 public class MensionsColumnFactory implements ColumFactory{

@@ -15,7 +15,16 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * プラグインを読み込むクラス
+ * @author kyuuban
+ *
+ */
 public class PluginLoader{
+
+	/**
+	 * プラグインフォルダの中にあるプラグインをロードします
+	 */
 	public void load(){
 		File file=new File("plugins");
 		if(!file.exists())file.mkdir();
@@ -26,11 +35,16 @@ public class PluginLoader{
 				loadPlugin(f,loader);
 			}
 		}
-		
+
 		loadDevelopPlugin();
 		pluginPostInit();
 	}
 
+	/**
+	 * プラグインをロード
+	 * @param f jarファイル
+	 * @param loader クラスローダ
+	 */
 	private void loadPlugin(File f,URLClassLoader loader) {
 		try {
 			addLibrary(f, loader);
@@ -56,6 +70,11 @@ public class PluginLoader{
 		}
 	}
 
+	/**
+	 * プラグインをロード
+	 * @param loader クラスローダ
+	 * @param name クラス名
+	 */
 	private void loadPlugin(URLClassLoader loader, String name) {
 		try {
 			Class<?> clazz=loader.loadClass(name.replace(".class", "").replace('/', '.'));
@@ -64,7 +83,10 @@ public class PluginLoader{
 			e.printStackTrace();
 		}
 	}
-	
+
+	/**
+	 * loadPluginオプションに指定されているクラスをプラグインとしてロード
+	 */
 	private void loadDevelopPlugin() {
 		String path = System.getProperty("loadPlugin");
 		if (path != null) {
@@ -77,6 +99,17 @@ public class PluginLoader{
 		}
 	}
 
+	/**
+	 * 指定されたファイルを検索パス内に追加
+	 * @param file
+	 * @param loader
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws MalformedURLException
+	 */
 	public static void addLibrary(File file,ClassLoader loader) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, MalformedURLException{
 		Method m=URLClassLoader.class.getDeclaredMethod("addURL", new Class[]{URL.class});
 		m.setAccessible(true);

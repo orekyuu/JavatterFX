@@ -1,4 +1,4 @@
-package com.github.orekyuu.javatterfx.column;
+package com.github.orekyuu.javatterfx.managers;
 
 import javafx.scene.Parent;
 

@@ -7,8 +7,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
 
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.Listener;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 
 public abstract class AbstractColumnController implements Initializable,Listener{
 

@@ -12,7 +12,6 @@ import twitter4j.UserStreamListener;
 
 import com.github.orekyuu.javatterfx.account.AccountManager;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.stream.EventBlock;
 import com.github.orekyuu.javatterfx.event.stream.EventDirectMessage;
 import com.github.orekyuu.javatterfx.event.stream.EventFavorite;
@@ -34,6 +33,7 @@ import com.github.orekyuu.javatterfx.event.stream.EventUserListUnscription;
 import com.github.orekyuu.javatterfx.event.stream.EventUserListUpdate;
 import com.github.orekyuu.javatterfx.event.stream.EventUserProfileUpdate;
 import com.github.orekyuu.javatterfx.event.stream.EventUserStreamException;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 
 public class JavatterUserStream implements UserStreamListener{
 

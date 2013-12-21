@@ -16,18 +16,18 @@ import twitter4j.auth.AccessToken;
 
 import com.github.orekyuu.javatterfx.account.AccountManager;
 import com.github.orekyuu.javatterfx.account.TwitterManager;
-import com.github.orekyuu.javatterfx.column.ColumnManager;
 import com.github.orekyuu.javatterfx.column.MensionsColumnFactory;
 import com.github.orekyuu.javatterfx.column.TimeLineColumnFactory;
 import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
 import com.github.orekyuu.javatterfx.controller.LoginController;
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadEnd;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadStart;
 import com.github.orekyuu.javatterfx.listeners.JavaBeamRT;
 import com.github.orekyuu.javatterfx.listeners.TweetObjectListener;
+import com.github.orekyuu.javatterfx.managers.ColumnManager;
+import com.github.orekyuu.javatterfx.managers.EventManager;
+import com.github.orekyuu.javatterfx.managers.SaveDataManager;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
-import com.github.orekyuu.javatterfx.util.SaveDataManager;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 import com.github.orekyuu.javatterfx.view.JavatterCss;
 import com.github.orekyuu.javatterfx.view.JavatterFxmlLoader;
@@ -116,12 +116,6 @@ public class Main extends Application{
 				} catch (TwitterException e) {
 					e.printStackTrace();
 				}
-			}
-		});
-		executor.execute(new Runnable() {
-
-			@Override
-			public void run() {
 				Main.getUserStream().start();
 			}
 		});

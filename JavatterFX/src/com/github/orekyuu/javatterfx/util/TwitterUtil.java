@@ -6,9 +6,9 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadHomeTimeline;
 import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 
 /**
  * Twitterでのアクションを補助するクラス

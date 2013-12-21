@@ -10,8 +10,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import twitter4j.User;
 
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 import com.github.orekyuu.javatterfx.util.ImageTask;
 
 public class UserObjectController implements Initializable{

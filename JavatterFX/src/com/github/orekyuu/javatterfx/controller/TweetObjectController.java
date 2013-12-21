@@ -37,7 +37,6 @@ import twitter4j.TwitterException;
 import twitter4j.URLEntity;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
-import com.github.orekyuu.javatterfx.event.EventManager;
 import com.github.orekyuu.javatterfx.event.user.EventFavoriteClick;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
@@ -45,6 +44,7 @@ import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventTweetHyperlinkClick;
 import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.event.view.EventInitializeTweetobject;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 import com.github.orekyuu.javatterfx.util.ImageTask;
 import com.github.orekyuu.javatterfx.util.TwitterUtil;
 
