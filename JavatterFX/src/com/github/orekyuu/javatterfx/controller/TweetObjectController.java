@@ -26,7 +26,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -34,14 +33,12 @@ import javafx.stage.StageStyle;
 import twitter4j.MediaEntity;
 import twitter4j.Status;
 import twitter4j.TwitterException;
-import twitter4j.URLEntity;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.user.EventFavoriteClick;
 import com.github.orekyuu.javatterfx.event.user.EventIconClick;
 import com.github.orekyuu.javatterfx.event.user.EventRTClick;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
-import com.github.orekyuu.javatterfx.event.user.EventTweetHyperlinkClick;
 import com.github.orekyuu.javatterfx.event.user.EventViaClick;
 import com.github.orekyuu.javatterfx.event.view.EventInitializeTweetobject;
 import com.github.orekyuu.javatterfx.managers.EventManager;
@@ -61,7 +58,7 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	@FXML
 	private Label username;
 	@FXML
-	private FlowPane tweetPane;
+	private Label tweetLabel;
 	@FXML
 	private Hyperlink via;
 	@FXML
@@ -112,10 +109,6 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 */
 	public void addMenuItem(MenuItem button){
 		menu.getItems().add(button);
-	}
-
-	public FlowPane getTextPane(){
-		return tweetPane;
 	}
 
 	/**
@@ -215,37 +208,7 @@ public class TweetObjectController implements Initializable,Comparable<TweetObje
 	 * @param status
 	 */
 	private void setTweetText(Status status){
-		String text=status.getText();
-		for(URLEntity entity:status.getURLEntities()){
-			text=text.replace(entity.getURL(), "\0"+entity.getExpandedURL()+"\0");
-		}
-
-		final Status tweet=this.status;
-		for(String s:text.split("\0")){
-			final URLEntity entity=getURLEntity(s, status);
-			if(entity!=null){
-				Hyperlink link=new Hyperlink();
-				link.setText(s);
-				link.setOnAction(new EventHandler<ActionEvent>() {
-
-					@Override
-					public void handle(ActionEvent event) {
-						EventManager.INSTANCE.eventFire(new EventTweetHyperlinkClick(entity.getExpandedURL(), tweet));
-					}
-
-				});
-				tweetPane.getChildren().add(link);
-			}else{
-				tweetPane.getChildren().add(new Label(s));
-			}
-		}
-	}
-
-	private URLEntity getURLEntity(String text,Status status){
-		for(URLEntity entity:status.getURLEntities()){
-			if(entity.getExpandedURL().equals(text))return entity;
-		}
-		return null;
+		tweetLabel.setText(status.getText());
 	}
 
 	/**

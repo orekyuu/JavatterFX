@@ -44,9 +44,9 @@
           </children>
         </VBox>
       </bottom>
-      <center>
-        <FlowPane fx:id="tweetPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="-1.0" prefWidth="-1.0" prefWrapLength="200.0" />
-      </center>
+      <left>
+        <Label id="Label" fx:id="tweetLabel" maxHeight="1.7976931348623157E308" maxWidth="-1.0" minHeight="-1.0" minWidth="0.0" text="Label" wrapText="true" />
+      </left>
       <top>
         <Label fx:id="accountname" alignment="TOP_LEFT" maxWidth="-1.0" text="\@hoge" BorderPane.alignment="CENTER_LEFT">
           <font>

@@ -6,13 +6,20 @@ import java.util.Map;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.GroupBuilder;
 import javafx.scene.Parent;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.MenuItem;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 
 import com.github.orekyuu.javatterfx.controller.TweetObjectController;
+import com.github.orekyuu.javatterfx.event.user.EventTweetHyperlinkClick;
+import com.github.orekyuu.javatterfx.managers.EventManager;
 
 public class TweetListCell extends ListCell<Status>{
 
@@ -32,7 +39,7 @@ public class TweetListCell extends ListCell<Status>{
 			return;
 		}
 
-
+		registerContextMenu(status);
 		if(map.containsKey(status.getId())){
 			setGraphic(map.get(status.getId()));
 			return;
@@ -69,12 +76,29 @@ public class TweetListCell extends ListCell<Status>{
 		CellSizeProperty prop=new CellSizeProperty(getListView().widthProperty());
 		c.getRootPane().maxWidthProperty().bind(prop);
 		c.getRootPane().prefWidthProperty().bind(prop);
-		c.getTextPane().prefWrapLengthProperty().bind(prop);
-		c.getTextPane().maxWidthProperty().bind(prop);
 
 		Group group = GroupBuilder.create().children(c.getRootPane()).build();
 		setGraphic(group);
 		map.put(status.getId(), group);
+	}
+
+	private void registerContextMenu(final Status status){
+		ContextMenu menu=new ContextMenu();
+		for(URLEntity entity:status.getURLEntities()){
+			MenuItem item=new MenuItem();
+			final String url=entity.getExpandedURL();
+			item.setText(url);
+			item.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent paramT) {
+					EventTweetHyperlinkClick event=new EventTweetHyperlinkClick(url, status);
+					EventManager.INSTANCE.eventFire(event);
+				}
+			});
+			menu.getItems().add(item);
+		}
+		setContextMenu(menu);
 	}
 
 	class CellSizeProperty extends ReadOnlyDoubleProperty{
