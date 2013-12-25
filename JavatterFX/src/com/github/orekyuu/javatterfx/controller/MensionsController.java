@@ -5,13 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +14,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Callback;
 import twitter4j.Status;
@@ -31,7 +25,7 @@ import com.github.orekyuu.javatterfx.event.stream.EventLoadMensions;
 import com.github.orekyuu.javatterfx.event.stream.EventStatus;
 import com.github.orekyuu.javatterfx.view.TweetListCell;
 
-public class MensionsController extends AbstractColumnController{
+public class MensionsController extends AbstractColumnController implements IStatusList{
 
 	@FXML
 	private BorderPane root;
@@ -44,14 +38,13 @@ public class MensionsController extends AbstractColumnController{
 
 	private Map<Long,Parent> map;
 
-	private BlockingQueue<Status> tweetQueue = new LinkedBlockingQueue<>();
-	private ScrollBar listViewBar;
-	private DoubleProperty pos;
+	private StatusListAdapter adapter;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		super.initialize(arg0, arg1);
 		map=new TreeMap<>();
+		adapter=new StatusListAdapter(listView);
 		listView.setItems(FXCollections.observableArrayList(new HashSet<Status>()));
 		listView.setCellFactory(new Callback<ListView<Status>, ListCell<Status>>() {
 
@@ -67,76 +60,12 @@ public class MensionsController extends AbstractColumnController{
 		name.setText(s);
 	}
 
-	/**
-	 * スクロールバーの設定
-	 */
-	private void settingScrollBar(){
-		if(listViewBar==null)
-			listViewBar=(ScrollBar) listView.lookup(".scroll-bar");
-		if(listViewBar==null)
-			return;
-		if(pos==null)
-			pos=listViewBar.valueProperty();
-
-		pos.addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> value, Number oldValue, Number newValue) {
-				if(isTop())
-					clearTweetQueue();
-			}
-		});
-	}
-
-	private void addObject(Status p) {
-		settingScrollBar();
-		try {
-			tweetQueue.put(p);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		if(isTop())
-			clearTweetQueue();
-	}
-
-	private void clearTweetQueue(){
-		while(!tweetQueue.isEmpty()){
-			try {
-				final Status status = tweetQueue.take();
-				Platform.runLater(new Runnable() {
-
-					@Override
-					public void run() {
-						try {
-							listView.getItems().add(0, status);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-				});
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
-			}
-		}
-	}
-
-	private void addLast(Status p) {
-		listView.getItems().add(p);
-	}
-
 	public void onScrollTop(ActionEvent event){
-		listView.getSelectionModel().clearAndSelect(0);
-		listView.scrollTo(0);
-		if(isTop())
-			clearTweetQueue();
+		scrollTop();
 	}
 
 	public void onClose(ActionEvent event){
 		close(root);
-	}
-
-	private boolean isTop(){
-		if(pos==null||tweetQueue.isEmpty())return false;
-		return pos.get()==0;
 	}
 
 	@EventHandler
@@ -148,7 +77,7 @@ public class MensionsController extends AbstractColumnController{
 			public void run() {
 				try {
 					if(isReply(status))
-					addObject(status);
+						addStatusTop(status);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -169,11 +98,31 @@ public class MensionsController extends AbstractColumnController{
 			@Override
 			public void run() {
 				try {
-					addLast(status);
+					addStatusLast(status);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+
+	@Override
+	public void removeStatus(Status status) {
+		adapter.removeStatus(status);
+	}
+
+	@Override
+	public void scrollTop() {
+		adapter.scrollTop();
+	}
+
+	@Override
+	public void addStatusTop(Status status) {
+		adapter.addStatusTop(status);
+	}
+
+	@Override
+	public void addStatusLast(Status status) {
+		adapter.addStatusLast(status);
 	}
 }
