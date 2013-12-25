@@ -43,6 +43,7 @@ public class PluginLoader{
 			}
 		}
 
+		addPlugin(orekyuu.javabeam.PluginJavaBeam.class);
 		loadDevelopPlugin();
 		pluginPostInit();
 	}
@@ -199,6 +200,7 @@ public class PluginLoader{
 				MenuItem item=new MenuItem();
 				item.setText(p.name());
 				f.set(obj, item);
+				PluginRegister.INSTANCE.reginsterConfigMenu(p.name(), item);
 				EventCreatePluginConfig event=new EventCreatePluginConfig(item);
 				EventManager.INSTANCE.eventFire(event);
 				size++;
@@ -207,6 +209,7 @@ public class PluginLoader{
 				MenuItem item=new Menu();
 				item.setText(p.name());
 				f.set(obj, item);
+				PluginRegister.INSTANCE.reginsterConfigMenu(p.name(), item);
 				EventCreatePluginConfig event=new EventCreatePluginConfig(item);
 				EventManager.INSTANCE.eventFire(event);
 				size++;

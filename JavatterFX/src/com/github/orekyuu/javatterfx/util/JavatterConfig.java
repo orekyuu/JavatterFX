@@ -26,7 +26,6 @@ public class JavatterConfig {
 	public void init(){
 		savedata=new SaveData("JavatterConfig", new File("SaveData/JavatterConfig"));
 		SaveDataManager.getInstance().registerSaveData(savedata);
-		savedata.setDefaultValue("JavaBeamRT", false);
 		savedata.setDefaultValue("useLocalCache", true);
 	}
 
@@ -36,22 +35,6 @@ public class JavatterConfig {
 	 */
 	public static JavatterConfig getInstance(){
 		return instance;
-	}
-
-	/**
-	 * JavaビームRTのフラグを設定する
-	 * @param flag
-	 */
-	public void setJavaBeamRT(boolean flag){
-		savedata.setBoolean("JavaBeamRT", flag);
-	}
-
-	/**
-	 * JavaビームRTの設定を返す
-	 * @return
-	 */
-	public boolean getJavaBeamRT(){
-		return savedata.getBoolean("JavaBeamRT");
 	}
 
 	/**

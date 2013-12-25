@@ -24,15 +24,16 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import orekyuu.plugin.loader.PluginRegister;
 import twitter4j.Status;
 
 import com.github.orekyuu.javatterfx.account.TwitterManager;
 import com.github.orekyuu.javatterfx.event.EventHandler;
 import com.github.orekyuu.javatterfx.event.Listener;
-import com.github.orekyuu.javatterfx.event.system.EventCreatePluginConfig;
 import com.github.orekyuu.javatterfx.event.user.EventReplyClick;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet;
 import com.github.orekyuu.javatterfx.event.user.EventUserTweet.EventType;
+import com.github.orekyuu.javatterfx.event.view.EventToolbarCreated;
 import com.github.orekyuu.javatterfx.managers.ColumnManager;
 import com.github.orekyuu.javatterfx.managers.EventManager;
 import com.github.orekyuu.javatterfx.util.JavatterConfig;
@@ -63,8 +64,6 @@ public class WindowController implements Initializable, Listener{
     @FXML
     private HBox box;
     @FXML
-    private CheckMenuItem beamRT;
-    @FXML
     private CheckMenuItem useCache;
     @FXML
     private MenuButton column;
@@ -80,7 +79,6 @@ public class WindowController implements Initializable, Listener{
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		useCache.setSelected(JavatterConfig.getInstance().getUseLocalCache());
-		beamRT.setSelected(JavatterConfig.getInstance().getJavaBeamRT());
 		addChilden(ColumnManager.INSTANCE.getColumFactory("TimeLine").createView());
 		addChilden(ColumnManager.INSTANCE.getColumFactory("Mensions").createView());
 		EventManager.INSTANCE.addEventListener(this);
@@ -95,6 +93,10 @@ public class WindowController implements Initializable, Listener{
 			});
 			column.getItems().add(item);
 		}
+		EventToolbarCreated event=new EventToolbarCreated(bar, config, koukoku, tweetbutton);
+		EventManager.INSTANCE.eventFire(event);
+
+		plugin.getItems().addAll(PluginRegister.INSTANCE.getPluginConfigs());
 	}
 
 	/**
@@ -103,17 +105,6 @@ public class WindowController implements Initializable, Listener{
 	 */
 	public void addChilden(Node node){
 		box.getChildren().add(node);
-	}
-
-	@EventHandler
-	public void onPluginLoad(final EventCreatePluginConfig event) {
-		Platform.runLater(new Runnable() {
-
-			@Override
-			public void run() {
-				plugin.getItems().add(event.getItem());
-			}
-		});
 	}
 
 	@EventHandler
@@ -136,10 +127,6 @@ public class WindowController implements Initializable, Listener{
 		});
 	}
 
-    public void onJavaBeam(ActionEvent event) {
-		javaBeam();
-	}
-
     public void onTweet(ActionEvent event) {
 		tweet(EventType.BUTTON);
 	}
@@ -154,15 +141,7 @@ public class WindowController implements Initializable, Listener{
 				tweet(EventType.SHORTCUT);
 				event.consume();
 			}
-			if(KeyCode.J==event.getCode()){
-				javaBeam();
-				event.consume();
-			}
 		}
-	}
-
-	private void javaBeam() {
-		TweetDispenser.tweet("JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwww");
 	}
 
 	private void tweet(EventType type){
@@ -174,10 +153,6 @@ public class WindowController implements Initializable, Listener{
 		tweet.setText("");
 		reply=null;
 		file=null;
-	}
-
-	public void onBeamConfig(ActionEvent event){
-		JavatterConfig.getInstance().setJavaBeamRT(beamRT.isSelected());
 	}
 
 	public void onCacheConfig(ActionEvent event){

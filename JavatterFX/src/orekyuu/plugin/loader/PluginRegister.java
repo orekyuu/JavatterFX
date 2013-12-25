@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javafx.scene.control.MenuItem;
+
 import com.github.orekyuu.javatterfx.event.system.EventPluginLoad;
 import com.github.orekyuu.javatterfx.managers.EventManager;
 
@@ -13,7 +15,8 @@ public enum PluginRegister {
 
 	INSTANCE;
 
-	private Map<String,Object> plugins=new HashMap<String,Object>();
+	private Map<String,Object> plugins=new HashMap<>();
+	private Map<String,MenuItem> confingMenu=new HashMap<>();
 
 	/**
 	 * プラグインを登録
@@ -28,15 +31,36 @@ public enum PluginRegister {
 	}
 
 	/**
+	 * コンフィグ用のMenuItemを登録
+	 * @param name プラグイン名
+	 * @param item MenuItem
+	 */
+	void reginsterConfigMenu(String name,MenuItem item){
+		confingMenu.put(name, item);
+	}
+
+	/**
 	 * プラグインのリストを返す
 	 * @return
 	 */
 	Object[] getPluginList(){
-		List<Object> list=new ArrayList<Object>();
+		List<Object> list=new ArrayList<>();
 		for(Entry<String, Object> entry:plugins.entrySet()){
 			list.add(entry.getValue());
 		}
 		return list.toArray(new Object[]{});
+	}
+
+	/**
+	 * コンフィグ用のMenuItemの配列を返す
+	 * @return
+	 */
+	public MenuItem[] getPluginConfigs(){
+		List<MenuItem> list=new ArrayList<>();
+		for(Entry<String, MenuItem> entry:confingMenu.entrySet()){
+			list.add(entry.getValue());
+		}
+		return list.toArray(new MenuItem[]{});
 	}
 
 	/**

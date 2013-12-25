@@ -22,7 +22,6 @@ import com.github.orekyuu.javatterfx.controller.JavatterUserStream;
 import com.github.orekyuu.javatterfx.controller.LoginController;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadEnd;
 import com.github.orekyuu.javatterfx.event.system.EventStatusLoadStart;
-import com.github.orekyuu.javatterfx.listeners.JavaBeamRT;
 import com.github.orekyuu.javatterfx.listeners.TweetObjectListener;
 import com.github.orekyuu.javatterfx.managers.ColumnManager;
 import com.github.orekyuu.javatterfx.managers.EventManager;
@@ -51,6 +50,8 @@ public class Main extends Application{
 		Main.app=this;
 		SaveDataManager.getInstance().init();
 		JavatterConfig.getInstance().init();
+		PluginLoader pluginloader=new PluginLoader();
+		pluginloader.load();
 		userstream=new JavatterUserStream();
 		ColumnManager.INSTANCE.put(new TimeLineColumnFactory());
 		ColumnManager.INSTANCE.put(new MensionsColumnFactory());
@@ -89,7 +90,6 @@ public class Main extends Application{
 	}
 
 	private void registerListeners(){
-		EventManager.INSTANCE.addEventListener(new JavaBeamRT());
 		EventManager.INSTANCE.addEventListener(new TweetObjectListener());
 	}
 
@@ -109,8 +109,6 @@ public class Main extends Application{
 			@Override
 			public void run() {
 				try {
-					PluginLoader loader=new PluginLoader();
-					loader.load();
 					EventManager.INSTANCE.eventFire(new EventStatusLoadStart());//StatusLoadStartイベントを発火
 					TwitterUtil.loadHomeTimeLine(TwitterManager.getInstance().getTwitter());
 					TwitterUtil.loadMensions(TwitterManager.getInstance().getTwitter());
