@@ -61,4 +61,13 @@ public @interface Plugin {
 	@Target(ElementType.FIELD)
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface ConfigItem{}
+
+	/**
+	 * SaveDataインスタンスが入る変数につける
+	 * @author kyuuban
+	 *
+	 */
+	@Target(ElementType.FIELD)
+	@Retention(RetentionPolicy.RUNTIME)
+	public @interface SaveData{}
 }

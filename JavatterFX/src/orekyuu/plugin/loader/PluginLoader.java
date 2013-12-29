@@ -18,6 +18,8 @@ import java.util.zip.ZipInputStream;
 
 import com.github.orekyuu.javatterfx.event.system.EventCreatePluginConfig;
 import com.github.orekyuu.javatterfx.managers.EventManager;
+import com.github.orekyuu.javatterfx.managers.SaveData;
+import com.github.orekyuu.javatterfx.managers.SaveDataManager;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
@@ -154,7 +156,13 @@ public class PluginLoader{
 		Plugin p=(Plugin) plugin;
 
 		try {
+			SaveData data=new SaveData(p.name(), new File("SaveData/"+p.name()+".sav"));
+			SaveDataManager.getInstance().registerSaveData(data);
+
 			Object obj=clazz.newInstance();//インスタンスを作成
+
+			//SaveDataインスタンスを設定
+			setSaveData(clazz, obj, data);
 
 			//PreInitを実行
 			for(Method m:clazz.getMethods()){
@@ -185,8 +193,18 @@ public class PluginLoader{
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	private void setMenuItem(Class clazz,Object obj,Plugin p) throws IllegalArgumentException, IllegalAccessException{
+	private void setSaveData(Class<?> clazz,Object obj,SaveData data) throws IllegalArgumentException, IllegalAccessException {
+		for(Field f:clazz.getDeclaredFields()){
+			if(equippedAnnotations(f.getAnnotations(),
+					orekyuu.plugin.loader.Plugin.SaveData.class)==null)
+				continue;
+			if(!f.isAccessible())
+				f.setAccessible(true);
+			f.set(obj, data);
+		}
+	}
+
+	private void setMenuItem(Class<?> clazz,Object obj,Plugin p) throws IllegalArgumentException, IllegalAccessException{
 		int size=0;
 		for(Field f:clazz.getDeclaredFields()){
 			if(equippedAnnotations(f.getAnnotations(),
@@ -194,7 +212,7 @@ public class PluginLoader{
 				continue;
 			if(!f.isAccessible())
 				f.setAccessible(true);
-			Class c=(Class) f.getGenericType();
+			Class<?> c=(Class<?>) f.getGenericType();
 			String name=c.getName();
 			if(name.equals("javafx.scene.control.MenuItem")){
 				MenuItem item=new MenuItem();
