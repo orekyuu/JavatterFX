@@ -43,6 +43,13 @@ public class JavaBeamListener implements Listener {
 	@EventHandler
 	public void onToolbarCreated(EventToolbarCreated event){
 		Button button=new Button("JavaBeam");
+		button.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				TweetDispenser.tweet("JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwwwwww");
+			}
+		});
 		ObservableList<Node> list=event.getToolbar().getItems();
 		list.add(list.size()-1,button);
 	}
@@ -58,7 +65,7 @@ public class JavaBeamListener implements Listener {
 			public void handle(ActionEvent e) {
 				Status status=event.getController().getStatus();
 				String user=status.getUser().getScreenName();
-				StatusUpdateBuilder builder=new StatusUpdateBuilder("@"+user+" Javaビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwwwww")
+				StatusUpdateBuilder builder=new StatusUpdateBuilder("@"+user+" JavaFXビームﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞﾋﾞwwwwwwwwwww")
 				.setReplyID(status);
 				TweetDispenser.tweet(builder.create());
 			}
