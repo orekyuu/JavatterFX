@@ -237,6 +237,7 @@ public class PluginLoader{
 		if(size==0){
 			MenuItem item=new MenuItem();
 			item.setText(p.name());
+			PluginRegister.INSTANCE.reginsterConfigMenu(p.name(), item);
 			EventCreatePluginConfig event=new EventCreatePluginConfig(item);
 			EventManager.INSTANCE.eventFire(event);
 		}
