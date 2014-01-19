@@ -5,6 +5,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.auth.AccessToken;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  * Twitter管理クラス
@@ -21,7 +22,8 @@ public class TwitterManager {
 	private User user;
 
 	private TwitterManager(){
-		twitter=TwitterFactory.getSingleton();
+		ConfigurationBuilder conf = new ConfigurationBuilder().setUseSSL(true);
+		twitter=new TwitterFactory(conf.build()).getInstance();
 		twitter.setOAuthConsumer(consumerKey, consumerSecret);
 	}
 
